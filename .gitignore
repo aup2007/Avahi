@@ -1,0 +1,17 @@
+.env
+db/avahi.db
+__pycache__/
+*.pyc
+.DS_Store
+
+# Large local-only assets (too big for GitHub)
+archive.zip
+CarDD_release/
+
+# Docs / internal files kept local
+Plan.md
+SPEC.md
+CLAUDE.md
+AvahiCarInsurance.docx
+AvahiCarInsurance-BuildPlan.md
+db/seed_claims_log.md

@@ -1,0 +1,2443 @@
+{
+  "source": "CarDD test2017 (expert COCO annotations)",
+  "annotations_file": "CarDD_release/CarDD_COCO/annotations/instances_test2017.json",
+  "seed": 42,
+  "severity_map": {
+    "dent": {
+      "severity": "minor",
+      "operation": "repair"
+    },
+    "scratch": {
+      "severity": "minor",
+      "operation": "repair"
+    },
+    "crack": {
+      "severity": "moderate",
+      "operation": "repair"
+    },
+    "tire flat": {
+      "severity": "moderate",
+      "operation": "repair"
+    },
+    "lamp broken": {
+      "severity": "severe",
+      "operation": "replace"
+    },
+    "glass shatter": {
+      "severity": "severe",
+      "operation": "replace"
+    }
+  },
+  "junk_available": false,
+  "junk_note": "CarDD test2017 contains no unannotated/junk images -- every image is a real car-damage photo. Genuine junk/blurry/non-car images for the gatekeeper stage are NOT available here and must be sourced separately or synthesized in a later step.",
+  "counts": {
+    "total_images": 120,
+    "damage_images": 120,
+    "junk_images": 0,
+    "instances_by_category": {
+      "crack": 43,
+      "dent": 76,
+      "glass shatter": 24,
+      "lamp broken": 37,
+      "scratch": 84,
+      "tire flat": 22
+    },
+    "instances_by_severity": {
+      "minor": 160,
+      "moderate": 65,
+      "severe": 61
+    }
+  },
+  "images": [
+    {
+      "image_id": 12,
+      "file_name": "000012.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000012.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "tire flat",
+          "severity": "moderate",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "tire flat",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 40,
+      "file_name": "000040.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000040.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 42,
+      "file_name": "000042.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000042.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "glass shatter",
+          "severity": "severe",
+          "operation": "replace"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 44,
+      "file_name": "000044.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000044.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 88,
+      "file_name": "000088.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000088.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 90,
+      "file_name": "000090.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000090.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "glass shatter",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 106,
+      "file_name": "000106.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000106.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 175,
+      "file_name": "000175.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000175.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "glass shatter",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 185,
+      "file_name": "000185.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000185.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "glass shatter",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 191,
+      "file_name": "000191.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000191.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 233,
+      "file_name": "000233.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000233.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "glass shatter",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 293,
+      "file_name": "000293.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000293.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 330,
+      "file_name": "000330.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000330.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "glass shatter",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 340,
+      "file_name": "000340.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000340.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "glass shatter",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 353,
+      "file_name": "000353.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000353.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "tire flat",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 400,
+      "file_name": "000400.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000400.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 404,
+      "file_name": "000404.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000404.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 422,
+      "file_name": "000422.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000422.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 513,
+      "file_name": "000513.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000513.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "glass shatter",
+          "severity": "severe",
+          "operation": "replace"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 514,
+      "file_name": "000514.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000514.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 520,
+      "file_name": "000520.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000520.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 541,
+      "file_name": "000541.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000541.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 570,
+      "file_name": "000570.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000570.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 603,
+      "file_name": "000603.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000603.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "tire flat",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 659,
+      "file_name": "000659.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000659.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "tire flat",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 670,
+      "file_name": "000670.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000670.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "tire flat",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 696,
+      "file_name": "000696.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000696.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 702,
+      "file_name": "000702.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000702.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 730,
+      "file_name": "000730.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000730.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "tire flat",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 740,
+      "file_name": "000740.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000740.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "tire flat",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 766,
+      "file_name": "000766.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000766.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 778,
+      "file_name": "000778.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000778.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "tire flat",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 822,
+      "file_name": "000822.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000822.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "tire flat",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 869,
+      "file_name": "000869.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000869.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "tire flat",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 883,
+      "file_name": "000883.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000883.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 886,
+      "file_name": "000886.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000886.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 950,
+      "file_name": "000950.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000950.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 965,
+      "file_name": "000965.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000965.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "glass shatter",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 969,
+      "file_name": "000969.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/000969.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "tire flat",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 1016,
+      "file_name": "001016.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001016.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "tire flat",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 1024,
+      "file_name": "001024.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001024.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "tire flat",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 1039,
+      "file_name": "001039.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001039.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 1040,
+      "file_name": "001040.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001040.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 1058,
+      "file_name": "001058.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001058.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "tire flat",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 1071,
+      "file_name": "001071.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001071.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "tire flat",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 1088,
+      "file_name": "001088.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001088.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "tire flat",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 1163,
+      "file_name": "001163.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001163.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "tire flat",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 1236,
+      "file_name": "001236.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001236.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "tire flat",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 1268,
+      "file_name": "001268.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001268.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 1358,
+      "file_name": "001358.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001358.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 1372,
+      "file_name": "001372.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001372.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 1396,
+      "file_name": "001396.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001396.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 1437,
+      "file_name": "001437.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001437.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 1459,
+      "file_name": "001459.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001459.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "glass shatter",
+          "severity": "severe",
+          "operation": "replace"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 1493,
+      "file_name": "001493.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001493.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        },
+        {
+          "damage_category": "tire flat",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 1517,
+      "file_name": "001517.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001517.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 1536,
+      "file_name": "001536.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001536.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 1562,
+      "file_name": "001562.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001562.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 1594,
+      "file_name": "001594.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001594.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 1617,
+      "file_name": "001617.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001617.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 1641,
+      "file_name": "001641.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001641.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 1665,
+      "file_name": "001665.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001665.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 1709,
+      "file_name": "001709.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001709.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 1837,
+      "file_name": "001837.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001837.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 1874,
+      "file_name": "001874.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001874.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 1900,
+      "file_name": "001900.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001900.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 1917,
+      "file_name": "001917.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001917.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 1926,
+      "file_name": "001926.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001926.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 1963,
+      "file_name": "001963.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001963.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 1967,
+      "file_name": "001967.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/001967.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 2169,
+      "file_name": "002169.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/002169.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 2213,
+      "file_name": "002213.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/002213.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 2252,
+      "file_name": "002252.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/002252.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 2294,
+      "file_name": "002294.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/002294.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 2299,
+      "file_name": "002299.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/002299.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 2314,
+      "file_name": "002314.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/002314.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 2356,
+      "file_name": "002356.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/002356.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 2358,
+      "file_name": "002358.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/002358.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 2597,
+      "file_name": "002597.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/002597.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 2624,
+      "file_name": "002624.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/002624.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 2646,
+      "file_name": "002646.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/002646.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 2664,
+      "file_name": "002664.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/002664.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "glass shatter",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 2707,
+      "file_name": "002707.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/002707.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 2825,
+      "file_name": "002825.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/002825.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 2953,
+      "file_name": "002953.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/002953.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 3062,
+      "file_name": "003062.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003062.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "glass shatter",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 3082,
+      "file_name": "003082.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003082.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "glass shatter",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 3087,
+      "file_name": "003087.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003087.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 3124,
+      "file_name": "003124.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003124.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "glass shatter",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 3166,
+      "file_name": "003166.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003166.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "glass shatter",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 3201,
+      "file_name": "003201.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003201.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "glass shatter",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 3226,
+      "file_name": "003226.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003226.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "glass shatter",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 3283,
+      "file_name": "003283.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003283.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 3296,
+      "file_name": "003296.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003296.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "tire flat",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 3338,
+      "file_name": "003338.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003338.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "glass shatter",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 3354,
+      "file_name": "003354.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003354.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 3392,
+      "file_name": "003392.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003392.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 3414,
+      "file_name": "003414.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003414.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 3441,
+      "file_name": "003441.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003441.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 3516,
+      "file_name": "003516.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003516.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 3541,
+      "file_name": "003541.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003541.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 3586,
+      "file_name": "003586.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003586.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 3656,
+      "file_name": "003656.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003656.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 3683,
+      "file_name": "003683.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003683.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 3720,
+      "file_name": "003720.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003720.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "glass shatter",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 3734,
+      "file_name": "003734.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003734.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 3743,
+      "file_name": "003743.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003743.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 3748,
+      "file_name": "003748.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003748.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "glass shatter",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 3782,
+      "file_name": "003782.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003782.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "glass shatter",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 3789,
+      "file_name": "003789.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003789.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 3804,
+      "file_name": "003804.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003804.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "glass shatter",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 3829,
+      "file_name": "003829.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003829.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "tire flat",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 3831,
+      "file_name": "003831.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003831.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 3879,
+      "file_name": "003879.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003879.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "lamp broken",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 3905,
+      "file_name": "003905.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003905.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "glass shatter",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 3948,
+      "file_name": "003948.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003948.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 3956,
+      "file_name": "003956.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003956.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "scratch",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 3959,
+      "file_name": "003959.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003959.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "glass shatter",
+          "severity": "severe",
+          "operation": "replace"
+        }
+      ]
+    },
+    {
+      "image_id": 3992,
+      "file_name": "003992.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003992.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "dent",
+          "severity": "minor",
+          "operation": "repair"
+        }
+      ]
+    },
+    {
+      "image_id": 3994,
+      "file_name": "003994.jpg",
+      "image_path": "CarDD_release/CarDD_COCO/test2017/003994.jpg",
+      "is_junk": false,
+      "instances": [
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        },
+        {
+          "damage_category": "crack",
+          "severity": "moderate",
+          "operation": "repair"
+        }
+      ]
+    }
+  ]
+}
