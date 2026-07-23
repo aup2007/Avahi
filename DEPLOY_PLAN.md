@@ -3,20 +3,39 @@
 Status: **plan only — no code written yet.** This documents what will be built and why, for review before implementation.
 
 ## Decisions locked
-- **Demo shape:** live interactive pipeline. A visitor picks a seeded claim, the Arch 2 pipeline runs live (real Groq VLM calls), and the UI shows the decision + payout + full stage-by-stage audit trail.
+- **Demo shape:** live upload. A visitor **picks a customer from a dropdown** (which loads that customer's real policy) and **uploads a damage photo**. That submission **creates a new claim**, the Arch 2 pipeline runs live (real Groq VLM calls) on the uploaded photo, and the UI shows the decision + payout + full stage-by-stage audit trail.
 - **Host:** single managed host (Render / Railway / Fly), one service, Dockerized.
 
-## The Option-A constraint (why "pick a claim", not "upload a photo")
-Arch 2 computes payout from the DB's stored `claim_damage_instances` keyed by `claim_id` (`run_claim(conn, claim_id, image_path)` → `compute_payout(conn, claim_id, ...)`). An arbitrary uploaded photo has **no `claim_id`, no policy, no `coverage_type`**, so it can produce perception output (gatekeeper + damage read) but **no payout and no route** — which is the whole demo. Therefore the live demo is **browse the 368 seeded claims → pick one → run**. Arbitrary upload (perception-only) is deferred to v2.
+## The live-upload flow (customer + photo → new claim → run)
+Uploading a photo **is filing a new claim.** So rather than special-casing the money code, intake writes a real claim and the normal pipeline runs on it:
+
+1. **Customer dropdown** → selects a `customer_id` → loads their policy (car_class, coverages active, limits, deductible). The photo cannot supply the policy, so the customer brings it.
+2. **Photo upload** → saved to an ephemeral `uploads/` dir → this is the damage of the new claim.
+3. **Intake:** run gatekeeper → segmenter → damage_assessor **once** on the uploaded photo. The vision-detected damage becomes the claim's `claim_damage_instances` (damage_category from vision; severity from the fixed `common/severity_map`). A new `claim_id` + damage rows are **written to the DB**, linked to the chosen customer.
+4. **Adjudication:** the existing `common/rules_engine` runs on that claim exactly like any seeded one → route + payout.
+
+The money is still never model-emitted: the model only names the **damage categories**; the frozen severity map + cost table price them and the rules engine does the arithmetic. This is the honest production model — a fresh claim's damage of record is *established* from the photo at intake, then treated as authoritative.
+
+### Coverage handling — LOCKED: Option 1 (single pool)
+Arch 2 is **story-blind by design** (reading the incident narrative is an Arch 3 feature). The eval-mode payout math splits damage into two coverage pools — **collision** (crash) vs **comprehensive** (non-crash) — each with its own active-flag and limit; that `coverage_type` was pre-stored on each seeded claim (derived from the story *at seed time*). A fresh uploaded photo has no story and no stored value, and Arch 2 has no way to infer the peril, so for the live path it **does not split the pools**:
+
+- **Covered?** If the policy is active and has *any* coverage active → covered; if lapsed → `auto_deny`.
+- **Cap:** `min(total_repair_cost, limit)` (seeded policies set collision_limit == comprehensive_limit, so "the limit" is a single unambiguous number).
+- **Deductible + escalation gate + deductible-≥-limit guard:** identical to eval mode.
+
+Known limitation (accepted): this assumes any damage falls under whatever coverage the customer holds, so it **cannot produce a `not_covered` deny for a peril the customer didn't buy** (e.g. collision-only policy + hail damage would be approved, not denied). That peril-mismatch judgement is precisely the gap Arch 3 (story-reading) is meant to fill. Implemented as a live-only branch in the rules engine; the eval path (`compute_payout` by `claim_id`) is untouched.
 
 ## What exists vs. what this deploy wraps
-- Exists and is wrapped: `arch2_split/pipeline.py` (gatekeeper → segmenter → damage_assessor → `common/rules_engine`), the seeded `db/avahi.db` (cost_table 18, policies 24, claims 368, claim_damage_instances 869), the 120 curated CarDD `test2017` images.
+- Exists and is wrapped: `arch2_split/pipeline.py` (gatekeeper → segmenter → damage_assessor → `common/rules_engine`), the seeded `db/avahi.db` (cost_table 18, **policies 24** — these drive the customer dropdown), `common/severity_map`, `arch2_split/vlm_client`.
+- The seeded **claims** (368) and their bundled images are **not needed** for the live-upload demo — customers upload their own photos. The DB is still required for **policies** and the cost table.
 - NOT part of this deploy (not built yet): Arch 1, Arch 3, `eval/`, golden-set export. This deploys **Arch 2 only**.
 
-## Known blockers to resolve before it runs live
-1. **`VISION_MODEL = "qwen/qwen3.6-27b"` is a placeholder** (per CLAUDE.md) and likely not a valid Groq model id — the live demo will 400 until it's set to a real Groq vision model. Fix: make it env-overridable (`VISION_MODEL` env var) and set a known-good vision model at deploy time.
-2. **No junk/blurry images exist** in the curated set (manifest `junk_available: false`), so the gatekeeper "retake" path can't be shown by real data. The UI will note this rather than fake it.
-3. **Groq free tier ~8000 tokens/min**; each run = 3 VLM calls (gatekeeper, segmenter, damage_assessor). Mitigation: downscale images to max 1024px before base64 encoding (Pillow), in `vlm_client._encode_image`.
+## Known blockers / notes
+1. **`VISION_MODEL`** is now env-overridable (`os.environ.get("VISION_MODEL", "qwen/qwen3.6-27b")`) — set a real Groq vision model at deploy time. *(done in `vlm_client.py`)*
+2. **VLM robustness** is in place: `vlm_client._encode_image` downscales the long edge to 512px, and calls retry on `json_validate_failed` + rate limits. *(done)*
+3. **Groq free tier ~8000 tokens/min**; each run = 3 VLM calls (gatekeeper, segmenter, damage_assessor). The 512px downscale keeps a single run under the cap.
+4. **DB must be writable** — intake creates new claim rows. Uploaded claims are ephemeral (lost on host restart); they do **not** touch the frozen golden set (separate files).
+5. **No gatekeeper "retake" demo by default** — the customer supplies the photo, so a genuinely bad photo *can* now trigger the retake path organically (unlike the seeded set, which had no junk images).
 
 ---
 
@@ -24,10 +43,10 @@ Arch 2 computes payout from the DB's stored `claim_damage_instances` keyed by `c
 
 | Piece | Choice | Notes |
 |---|---|---|
-| Backend | FastAPI + uvicorn | wraps `pipeline.run_claim`; serves API + static frontend + images from one process |
-| Frontend | single-page vanilla HTML/CSS/JS | no build step — simplest for a single host; served by FastAPI StaticFiles |
-| DB | bundled `db/avahi.db`, read-only | Option A never writes; ephemeral host FS is fine |
-| Images | bundled `web_images/` (120 files, ~87MB) | subset of `test2017` referenced by claims; generated by `scripts/bundle_images.py` |
+| Backend | FastAPI + uvicorn | wraps the intake + `pipeline`; serves API + static frontend from one process |
+| Frontend | single-page vanilla HTML/CSS/JS | no build step — served by FastAPI StaticFiles |
+| DB | bundled `db/avahi.db`, **read-write** | needs writes for new uploaded claims; ephemeral host FS is fine |
+| Uploads | ephemeral `uploads/` dir | user photos saved per-run; not committed, not persistent |
 | Secret | `GROQ_API_KEY` env var on host | never committed |
 | Model | `VISION_MODEL` env var | overrides the placeholder without a code change |
 | Container | `Dockerfile` (python:3.12-slim) | binds `$PORT`; portable across Render/Railway/Fly |
@@ -35,60 +54,55 @@ Arch 2 computes payout from the DB's stored `claim_damage_instances` keyed by `c
 
 ### API surface (FastAPI, same-origin, no CORS)
 - `GET /` → serve `app/static/index.html`
-- `GET /api/claims` → list all 368 claims with: photo_file, story, policy summary (car_class, status, coverages, limits, deductible, name), truth damage instances, and a **deterministic preview** payout/route (`compute_payout` at confidence=1.0 — offline, no VLM) so the catalog shows variety before anyone spends a token.
-- `GET /api/claims/{claim_id}` → detail: policy, truth damage, deterministic payout.
-- `GET /api/image/{photo_file}` → `FileResponse` from `IMAGES_DIR`.
-- `POST /api/claims/{claim_id}/run` → runs `pipeline.run_claim`, returns the serialized `PipelineResult` (route, payout, confidence, per-stage logs, gatekeeper, panels, predicted damage, reasons). **This is the only endpoint that spends tokens.**
+- `GET /api/customers` → list the 24 customers/policies for the dropdown: `customer_id`, name, car_class, status, coverages active, limits, deductible.
+- `POST /api/upload` → multipart: **photo file + `customer_id`**. Saves the photo, runs intake (vision → new claim rows) + adjudication, returns the serialized pipeline result (route, payout, confidence, per-stage logs, gatekeeper, panels, predicted damage, reasons) **plus the new `claim_id`**. **This is the only endpoint that spends tokens.**
 
 ### Files to be created
 ```
 app/
   __init__.py
-  main.py                # FastAPI app + endpoints + serialization
+  main.py                # FastAPI app: customers, upload+run, serialization
   static/
     index.html           # the whole frontend (inline CSS/JS)
-scripts/
-  bundle_images.py       # copy the 120 claim-referenced images into web_images/
-requirements.txt         # fastapi, uvicorn[standard], groq, pillow
+requirements.txt         # fastapi, uvicorn[standard], python-multipart, groq, pillow
 Dockerfile
-.dockerignore            # exclude CarDD_release/, archive.zip, .git, __pycache__, .env
+.dockerignore            # exclude CarDD_release/, archive.zip, .git, __pycache__, .env, uploads/
 render.yaml
-DEPLOY.md                # step-by-step: bundle images, set env, local test, deploy
+DEPLOY.md                # step-by-step: set env, local test, deploy
 ```
-### File to be edited (minimal)
-- `arch2_split/vlm_client.py`: (a) `VISION_MODEL = os.environ.get("VISION_MODEL", "qwen/qwen3.6-27b")`; (b) downscale to ≤1024px in `_encode_image` via Pillow. Money-path untouched (perception input only). No file-header comment added.
+### Files to be edited
+- `arch2_split/pipeline.py`: add a live-intake path — run vision on the uploaded photo, write the new claim + damage rows (severity from `severity_map`), then adjudicate via the Option-1 single-pool branch. Eval path (`run_claim`) untouched.
+- `common/rules_engine.py`: add an Option-1 single-pool coverage branch for live claims (covered if policy active + any coverage active; cap by the single limit; same deductible + gates). Eval path unchanged.
+- `app/main.py`: replace the pick-a-claim endpoints with `GET /api/customers` + `POST /api/upload`; open the DB read-write.
 
 ### Deploy paths (documented in DEPLOY.md)
-- **Render (from GitHub):** needs `web_images/` committed (~87MB — acceptable, or Git LFS). Set `GROQ_API_KEY` + `VISION_MODEL` in dashboard. One-click from `render.yaml`.
-- **Fly.io (local build push):** `web_images/` need not be in git — built locally where CarDD exists, pushed as an image. Best if you don't want images in the repo.
+- **No image bundling needed** — the ~87MB `web_images/` and `scripts/bundle_images.py` are **dropped**; photos come from the uploader at runtime. This removes the biggest repo-size problem.
+- **Render (from GitHub):** commit `db/avahi.db` (small); set `GROQ_API_KEY` + `VISION_MODEL` in the dashboard. One-click from `render.yaml`.
+- **Fly.io (local build push):** same, no large assets to ship.
 
 ---
 
 ## Frontend plan (`app/static/index.html`)
 
-**Goal:** make the SPEC's core thesis *visible* — perception is probabilistic (the model, with confidence), adjudication is deterministic (the money, from code). The layout puts those two things side by side.
+**Goal:** make the SPEC's core thesis *visible* — perception is probabilistic (the model, with confidence), adjudication is deterministic (the money, from code).
 
-### Layout — two columns
-- **Left rail — Claim catalog.** Scrollable list of the 368 claims. Each card: thumbnail, customer name + car_class, policy status badge (active/lapsed), coverage chips (collision/comprehensive), claim story snippet, and the deterministic preview route badge (auto_approve / auto_deny / escalate). Filters at top: by route, by policy status, by coverage. Search by claim_id.
-- **Right pane — Claim workspace.** Shows the selected claim big: photo, full policy card (limits, deductible), claim story, and the **truth damage** (from DB) as chips. One primary button: **"▶ Run Arch 2 pipeline (live)"** with a note "makes 3 live VLM calls".
-
-### The live run — a stage timeline
-On run, render 4 stages that fill in as results arrive (single request; stages revealed with a short stagger for effect):
-1. **Gatekeeper** — valid? reason, confidence bar. If invalid → route `retake`, stop.
-2. **Segmenter** — panel chips (labelled "observability-only, not used for money").
-3. **Damage assessor** — **predicted** damage chips with per-instance confidence, shown **next to the DB truth damage** for direct comparison (the money-line: this is perception, and it can be wrong).
-4. **Rules engine** — the deterministic block: cost breakdown by coverage pool → limit caps → deductible → **payout**, then the escalation gate ($2000 + confidence), ending in the final **route** badge. Labelled "pure code — no model touched this number".
+### Layout
+- **Top — claim intake.** A **customer dropdown** (shows name, car_class, status, coverage chips, limits/deductible once selected — so the visitor sees the policy the payout will run against), a **photo upload / drag-drop** with a client-side preview, and one primary button: **"▶ Run Arch 2 pipeline (live)"** with a note "makes 3 live VLM calls".
+- **Below — the live run timeline** (fills in as results arrive):
+  1. **Gatekeeper** — valid? reason, confidence bar. If invalid → route `retake`, stop.
+  2. **Segmenter** — panel chips (labelled "observability-only, not used for money").
+  3. **Damage assessor** — **predicted** damage chips with per-instance confidence. (No "truth damage" to compare against — this is a fresh claim; the photo *is* the source of truth.)
+  4. **Rules engine** — the deterministic block: cost breakdown → limit cap → deductible → **payout**, then the escalation gate ($2000 + confidence), ending in the final **route** badge. Labelled "pure code — no model touched this number".
 
 ### Result header
-A banner with the final route (colour-coded), the payout (or "—" for deny/escalate), and the weakest-link confidence that gated it. A short "why" line from `reasons` (e.g. `payout_above_auto_approve_threshold`, `confidence_below_threshold`, `policy_lapsed`, `not_covered`).
+Banner with the final route (colour-coded), the payout (or "—" for deny/escalate/retake), the weakest-link confidence that gated it, and a short "why" line from `reasons`.
 
 ### The teaching callout
-A persistent one-liner near the payout: **"The model read the damage. The code computed the dollars. No model emitted this number."** — the whole point of Arch 2, made literal.
+Persistent near the payout: **"The model read the damage. The code computed the dollars. No model emitted this number."**
 
 ### Style
-Neutral, clean, light/dark aware. No external CDNs (self-contained). Confidence shown as small bars. Route colours: approve=green, escalate=amber, deny=red, retake=grey.
+Neutral, clean, light/dark aware. No external CDNs (self-contained). Confidence as small bars. Route colours: approve=green, escalate=amber, deny=red, retake=grey.
 
 ### Explicitly out of scope (stated in the UI, not faked)
-- No arbitrary photo upload (Option A).
-- No live gatekeeper "retake" demo (no junk images curated yet).
+- No incident-story input — that's an Arch 3 feature; Arch 2 is story-blind.
 - No Arch 1 / Arch 3 comparison (not built).

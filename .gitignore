@@ -8,6 +8,11 @@ __pycache__/
 archive.zip
 CarDD_release/
 
+# Runtime artifacts (local-only)
+uploads/
+claimLangsmith.json
+eval/run_arch2.stdout
+
 # Docs / internal files kept local
 Plan.md
 SPEC.md
@@ -15,3 +20,4 @@ CLAUDE.md
 AvahiCarInsurance.docx
 AvahiCarInsurance-BuildPlan.md
 db/seed_claims_log.md
+arch3_realworld_review.md

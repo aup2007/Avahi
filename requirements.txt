@@ -1,4 +1,10 @@
 fastapi
 uvicorn[standard]
+python-multipart
+python-dotenv
 groq
 pillow
+langgraph
+langsmith
+pydantic
+pytest

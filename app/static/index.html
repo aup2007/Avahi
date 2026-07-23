@@ -13,140 +13,64 @@
     --text: #1a1d21;
     --muted: #6b7280;
     --accent: #2563eb;
-    --green: #16a34a;
-    --green-bg: #dcfce7;
-    --amber: #d97706;
-    --amber-bg: #fef3c7;
-    --red: #dc2626;
-    --red-bg: #fee2e2;
-    --grey: #6b7280;
-    --grey-bg: #e5e7eb;
+    --green: #16a34a;  --green-bg: #dcfce7;
+    --amber: #d97706;  --amber-bg: #fef3c7;
+    --red: #dc2626;    --red-bg: #fee2e2;
+    --grey: #6b7280;   --grey-bg: #e5e7eb;
     --shadow: 0 1px 2px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.1);
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #0f1115;
-      --panel: #181b20;
-      --panel-2: #1f242b;
-      --border: #2b313a;
-      --text: #e8eaed;
-      --muted: #9aa2ad;
-      --accent: #3b82f6;
-      --green: #4ade80;
-      --green-bg: #14311f;
-      --amber: #fbbf24;
-      --amber-bg: #3a2c07;
-      --red: #f87171;
-      --red-bg: #3a1414;
-      --grey: #9aa2ad;
-      --grey-bg: #2b313a;
+      --bg: #0f1115; --panel: #181b20; --panel-2: #1f242b; --border: #2b313a;
+      --text: #e8eaed; --muted: #9aa2ad; --accent: #3b82f6;
+      --green: #4ade80; --green-bg: #14311f;
+      --amber: #fbbf24; --amber-bg: #3a2c07;
+      --red: #f87171;   --red-bg: #3a1414;
+      --grey: #9aa2ad;  --grey-bg: #2b313a;
       --shadow: 0 1px 2px rgba(0,0,0,.4);
     }
   }
   * { box-sizing: border-box; }
-  html, body { height: 100%; }
   body {
-    margin: 0;
+    margin: 0; background: var(--bg); color: var(--text);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    font-size: 14px;
-    line-height: 1.45;
+    font-size: 14px; line-height: 1.45;
   }
   header {
-    display: flex;
-    align-items: baseline;
-    gap: 12px;
-    padding: 14px 20px;
-    border-bottom: 1px solid var(--border);
-    background: var(--panel);
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    display: flex; align-items: baseline; gap: 12px; padding: 14px 20px;
+    border-bottom: 1px solid var(--border); background: var(--panel);
   }
   header h1 { font-size: 16px; margin: 0; font-weight: 650; }
   header .sub { color: var(--muted); font-size: 12.5px; }
   header .spacer { flex: 1; }
 
-  .layout {
-    display: grid;
-    grid-template-columns: minmax(320px, 380px) 1fr;
-    height: calc(100vh - 51px);
+  .wrap { max-width: 860px; margin: 0 auto; padding: 22px 18px 60px; }
+
+  .card {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px; box-shadow: var(--shadow); margin-bottom: 16px;
   }
-  @media (max-width: 860px) {
-    .layout { grid-template-columns: 1fr; height: auto; }
-    .rail { max-height: 50vh; }
+  .card h3 { margin: 0 0 12px; font-size: 12px; text-transform: uppercase;
+             letter-spacing: .04em; color: var(--muted); font-weight: 650; }
+  label.field { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
+
+  select, input[type=text] {
+    width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 9px;
+    background: var(--panel-2); color: var(--text); font-size: 14px;
   }
 
-  /* ---- Left rail ---- */
-  .rail {
-    border-right: 1px solid var(--border);
-    background: var(--panel);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-  .rail .filters {
-    padding: 10px 12px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .rail .filters input[type=text] {
-    width: 100%;
-    padding: 7px 9px;
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    background: var(--panel-2);
-    color: var(--text);
-    font-size: 13px;
-  }
-  .filter-row { display: flex; gap: 6px; flex-wrap: wrap; }
-  .filter-row select {
-    flex: 1;
-    min-width: 90px;
-    padding: 6px 7px;
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    background: var(--panel-2);
-    color: var(--text);
-    font-size: 12.5px;
-  }
-  .rail .count { font-size: 11.5px; color: var(--muted); padding: 0 2px; }
-  .catalog { overflow-y: auto; flex: 1; padding: 8px; }
-
-  .claim-card {
-    display: flex;
-    gap: 10px;
-    padding: 9px;
-    border: 1px solid var(--border);
-    border-radius: 9px;
-    margin-bottom: 8px;
-    cursor: pointer;
-    background: var(--panel);
-    transition: border-color .12s, box-shadow .12s;
-  }
-  .claim-card:hover { border-color: var(--accent); }
-  .claim-card.selected { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
-  .claim-card .thumb {
-    width: 62px; height: 62px; flex-shrink: 0;
-    border-radius: 7px; object-fit: cover; background: var(--panel-2);
-  }
-  .claim-card .meta { min-width: 0; flex: 1; }
-  .claim-card .name { font-weight: 600; font-size: 13px; }
-  .claim-card .line { color: var(--muted); font-size: 11.5px; }
-  .claim-card .story {
-    font-size: 11.5px; color: var(--muted); margin-top: 3px;
-    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  .chips { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 5px; }
+  /* policy card revealed on customer select */
+  .policy-strip { margin-top: 14px; display: none; }
+  .policy-strip.show { display: block; }
+  .kv-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
+  .kv-cell { background: var(--panel-2); border: 1px solid var(--border); border-radius: 9px; padding: 9px 11px; }
+  .kv-cell .k { font-size: 10.5px; text-transform: uppercase; letter-spacing: .03em; color: var(--muted); }
+  .kv-cell .v { font-size: 14px; font-weight: 600; margin-top: 2px; }
+  .chips { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 4px; }
 
   .badge {
-    display: inline-flex; align-items: center; gap: 4px;
-    font-size: 10.5px; font-weight: 600; padding: 2px 7px;
-    border-radius: 999px; letter-spacing: .01em; white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 4px; font-size: 10.5px;
+    font-weight: 600; padding: 2px 8px; border-radius: 999px; white-space: nowrap;
   }
   .badge.route-auto_approve { background: var(--green-bg); color: var(--green); }
   .badge.route-auto_deny   { background: var(--red-bg);   color: var(--red); }
@@ -157,51 +81,39 @@
   .badge.cov { background: var(--panel-2); color: var(--muted); border: 1px solid var(--border); }
   .badge.dmg { background: var(--panel-2); color: var(--text); border: 1px solid var(--border); }
 
-  /* ---- Right workspace ---- */
-  .workspace { overflow-y: auto; padding: 20px; }
-  .empty-state {
-    height: 100%; display: flex; align-items: center; justify-content: center;
-    color: var(--muted); text-align: center; padding: 40px;
+  /* drop zone */
+  .drop {
+    margin-top: 14px; border: 2px dashed var(--border); border-radius: 11px;
+    padding: 26px; text-align: center; color: var(--muted); cursor: pointer;
+    transition: border-color .12s, background .12s;
   }
-  .ws-grid { display: grid; grid-template-columns: 300px 1fr; gap: 20px; }
-  @media (max-width: 720px) { .ws-grid { grid-template-columns: 1fr; } }
-
-  .card {
-    background: var(--panel); border: 1px solid var(--border);
-    border-radius: 11px; padding: 14px; box-shadow: var(--shadow);
-  }
-  .card h3 { margin: 0 0 10px; font-size: 12px; text-transform: uppercase;
-             letter-spacing: .04em; color: var(--muted); font-weight: 650; }
-  .photo { width: 100%; border-radius: 9px; background: var(--panel-2); display: block; }
-
-  .kv { display: flex; justify-content: space-between; gap: 12px; padding: 4px 0;
-        border-bottom: 1px dashed var(--border); font-size: 13px; }
-  .kv:last-child { border-bottom: none; }
-  .kv .k { color: var(--muted); }
-  .kv .v { font-weight: 550; text-align: right; }
+  .drop:hover, .drop.over { border-color: var(--accent); background: var(--panel-2); }
+  .drop.has-file { padding: 12px; }
+  .preview { max-width: 100%; max-height: 320px; border-radius: 9px; display: block; margin: 0 auto; }
+  .drop .hint { font-size: 12px; margin-top: 6px; }
 
   .run-btn {
-    width: 100%; margin-top: 14px; padding: 12px;
-    background: var(--accent); color: #fff; border: none; border-radius: 9px;
-    font-size: 14px; font-weight: 650; cursor: pointer;
+    width: 100%; margin-top: 16px; padding: 13px; background: var(--accent);
+    color: #fff; border: none; border-radius: 10px; font-size: 15px;
+    font-weight: 650; cursor: pointer;
   }
-  .run-btn:hover { filter: brightness(1.06); }
-  .run-btn:disabled { opacity: .55; cursor: default; }
-  .run-note { text-align: center; font-size: 11px; color: var(--muted); margin-top: 6px; }
+  .run-btn:hover:not(:disabled) { filter: brightness(1.06); }
+  .run-btn:disabled { opacity: .5; cursor: default; }
+  .run-note { text-align: center; font-size: 11px; color: var(--muted); margin-top: 7px; }
 
   /* result banner */
   .banner {
-    border-radius: 11px; padding: 16px 18px; margin-bottom: 16px;
-    display: flex; align-items: center; gap: 18px; border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px 18px; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 20px; border: 1px solid var(--border); flex-wrap: wrap;
   }
   .banner.route-auto_approve { background: var(--green-bg); border-color: var(--green); }
   .banner.route-auto_deny   { background: var(--red-bg);   border-color: var(--red); }
   .banner.route-escalate    { background: var(--amber-bg); border-color: var(--amber); }
   .banner.route-retake      { background: var(--grey-bg);  border-color: var(--grey); }
-  .banner .route-name { font-size: 20px; font-weight: 750; text-transform: capitalize; }
-  .banner .payout { font-size: 26px; font-weight: 800; }
   .banner .b-col { display: flex; flex-direction: column; }
   .banner .b-label { font-size: 10.5px; text-transform: uppercase; letter-spacing: .04em; opacity: .8; }
+  .banner .route-name { font-size: 20px; font-weight: 750; text-transform: capitalize; }
+  .banner .payout { font-size: 26px; font-weight: 800; }
   .banner .why { font-size: 12px; opacity: .85; }
   .banner .spacer { flex: 1; }
 
@@ -211,111 +123,164 @@
     background: var(--panel-2); border-radius: 0 8px 8px 0; margin-bottom: 16px;
   }
 
-  /* stage timeline */
   .stage {
     border: 1px solid var(--border); border-radius: 10px; margin-bottom: 10px;
     background: var(--panel); overflow: hidden; opacity: 0; transform: translateY(6px);
     animation: fadein .35s ease forwards;
   }
   @keyframes fadein { to { opacity: 1; transform: none; } }
-  .stage .head {
-    display: flex; align-items: center; gap: 10px; padding: 11px 14px;
-    background: var(--panel-2); border-bottom: 1px solid var(--border);
-  }
-  .stage .num {
-    width: 22px; height: 22px; border-radius: 50%; background: var(--accent);
-    color: #fff; font-size: 12px; font-weight: 700; display: flex;
-    align-items: center; justify-content: center; flex-shrink: 0;
-  }
+  .stage .head { display: flex; align-items: center; gap: 10px; padding: 11px 14px;
+                 background: var(--panel-2); border-bottom: 1px solid var(--border); }
+  .stage .num { width: 22px; height: 22px; border-radius: 50%; background: var(--accent);
+                color: #fff; font-size: 12px; font-weight: 700; display: flex;
+                align-items: center; justify-content: center; flex-shrink: 0; }
   .stage .title { font-weight: 650; font-size: 13.5px; }
   .stage .tag { font-size: 10.5px; color: var(--muted); font-style: italic; }
   .stage .body { padding: 12px 14px; }
   .stage.skipped { opacity: .5; }
 
   .conf-bar { height: 6px; border-radius: 4px; background: var(--panel-2);
-              overflow: hidden; min-width: 60px; flex: 1; max-width: 140px; }
+              overflow: hidden; min-width: 60px; max-width: 160px; flex: 1; }
   .conf-bar > i { display: block; height: 100%; background: var(--accent); }
-  .conf-line { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+  .conf-line { display: flex; align-items: center; gap: 8px; font-size: 12px; margin-top: 6px; }
 
-  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  @media (max-width: 620px) { .compare { grid-template-columns: 1fr; } }
-  .compare h4 { margin: 0 0 8px; font-size: 11.5px; text-transform: uppercase;
-                letter-spacing: .03em; color: var(--muted); }
-  .dmg-row { display: flex; align-items: center; gap: 8px; padding: 5px 0;
-             font-size: 12.5px; border-bottom: 1px dashed var(--border); }
+  .dmg-row { display: flex; align-items: center; gap: 8px; padding: 5px 0; font-size: 12.5px;
+             border-bottom: 1px dashed var(--border); }
   .dmg-row:last-child { border-bottom: none; }
   .dmg-row .cat { font-weight: 600; }
   .dmg-row .sev { color: var(--muted); font-size: 11.5px; }
 
-  .breakdown { font-size: 13px; }
   .breakdown .row { display: flex; justify-content: space-between; padding: 5px 0;
-                    border-bottom: 1px dashed var(--border); }
-  .breakdown .row.total { font-weight: 700; border-bottom: none; border-top: 2px solid var(--border);
-                          margin-top: 4px; padding-top: 8px; }
+                    border-bottom: 1px dashed var(--border); font-size: 13px; }
+  .breakdown .row.total { font-weight: 700; border-top: 2px solid var(--border);
+                          border-bottom: none; margin-top: 4px; padding-top: 8px; }
   .breakdown .row .neg { color: var(--red); }
 
   .reason-pill { display: inline-block; font-size: 11px; background: var(--panel-2);
-                 border: 1px solid var(--border); border-radius: 6px;
-                 padding: 3px 8px; margin: 3px 3px 0 0; font-family: ui-monospace, monospace; }
+                 border: 1px solid var(--border); border-radius: 6px; padding: 3px 8px;
+                 margin: 3px 3px 0 0; font-family: ui-monospace, monospace; }
 
   .spinner { width: 15px; height: 15px; border: 2px solid var(--border);
-             border-top-color: var(--accent); border-radius: 50%;
-             animation: spin .7s linear infinite; }
+             border-top-color: var(--accent); border-radius: 50%; animation: spin .7s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  .scope-note { font-size: 11.5px; color: var(--muted); margin-top: 18px;
-                padding-top: 12px; border-top: 1px solid var(--border); }
+  .scope-note { font-size: 11.5px; color: var(--muted); margin-top: 8px; padding-top: 12px;
+                border-top: 1px solid var(--border); }
   .scope-note b { color: var(--text); }
-  .loading { color: var(--muted); padding: 20px; }
   .err { color: var(--red); padding: 12px; font-size: 13px; }
+  .hidden { display: none; }
+
+  /* --- architecture switch --- */
+  .seg { display: flex; gap: 6px; background: var(--panel-2); border: 1px solid var(--border);
+         border-radius: 10px; padding: 4px; margin-bottom: 4px; }
+  .seg button { flex: 1; border: 0; background: transparent; color: var(--muted); cursor: pointer;
+                font: inherit; font-size: 13px; padding: 8px 10px; border-radius: 7px; text-align: left; }
+  .seg button b { display: block; font-size: 13.5px; color: var(--text); font-weight: 650; }
+  .seg button span { font-size: 11px; font-style: italic; }
+  .seg button.on { background: var(--panel); box-shadow: 0 1px 3px rgba(0,0,0,.18); }
+  .seg button.on span { color: var(--accent); font-style: normal; }
+
+  textarea.story {
+    width: 100%; box-sizing: border-box; min-height: 74px; resize: vertical;
+    padding: 10px 11px; border-radius: 9px; border: 1px solid var(--border);
+    background: var(--panel-2); color: var(--text); font: inherit; font-size: 13px;
+  }
+
+  /* --- Arch 3: PEV trace --- */
+  .budget { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+  .budget .m { font-size: 12px; color: var(--muted); }
+  .budget .m b { color: var(--text); font-size: 13px; }
+  .meter { display: inline-block; width: 92px; height: 6px; border-radius: 4px;
+           background: var(--panel-2); overflow: hidden; vertical-align: middle; margin: 0 7px; }
+  .meter i { display: block; height: 100%; background: var(--accent); }
+  .meter.warn i { background: var(--amber); }
+
+  .trace { position: relative; padding-left: 18px; }
+  .trace::before { content: ""; position: absolute; left: 5px; top: 6px; bottom: 6px;
+                   width: 2px; background: var(--border); }
+  .tnode { position: relative; padding: 7px 0; font-size: 13px; }
+  .tnode::before { content: ""; position: absolute; left: -16px; top: 13px; width: 8px; height: 8px;
+                   border-radius: 50%; background: var(--muted); border: 2px solid var(--panel); }
+  .tnode.n-planner::before   { background: var(--accent); }
+  .tnode.n-executor::before  { background: var(--text); }
+  .tnode.n-verifier::before  { background: var(--amber); }
+  .tnode.n-adjudicate::before, .tnode.n-escalate::before { background: var(--green); }
+  .tnode .n { font-weight: 650; margin-right: 8px; text-transform: capitalize; }
+  .tnode .s { color: var(--muted); }
+  .tnode.fresh { animation: fadein .3s ease backwards; }
+  .tnode.live { color: var(--muted); font-style: italic; }
+  .tnode.live::before { background: var(--accent); animation: pulse 1.1s ease-in-out infinite; }
+  @keyframes pulse { 50% { transform: scale(1.6); opacity: .45; } }
+
+  .ev-card { display: flex; align-items: baseline; gap: 10px; padding: 8px 0;
+             border-bottom: 1px solid var(--border); font-size: 13px; }
+  .ev-card:last-child { border-bottom: 0; }
+  .ev-card .name { font-weight: 620; min-width: 148px; }
+  .ev-card .detail { color: var(--muted); flex: 1; }
+  .ev-card .st { font-size: 10.5px; padding: 2px 7px; border-radius: 999px; font-weight: 650; }
+  .st.ok { background: var(--green-bg); color: var(--green); }
+  .st.flagged { background: var(--amber-bg); color: var(--amber); }
 </style>
 </head>
 <body>
 <header>
   <h1>Avahi</h1>
-  <span class="sub">Architecture 2 — Split Pipeline · live demo</span>
+  <span class="sub" id="header-sub">Architecture 2 — Split Pipeline · live demo</span>
   <span class="spacer"></span>
-  <span class="sub" id="build-note">perception is probabilistic · adjudication is deterministic</span>
+  <span class="sub">perception is probabilistic · adjudication is deterministic</span>
 </header>
 
-<div class="layout">
-  <!-- LEFT RAIL -->
-  <aside class="rail">
-    <div class="filters">
-      <input type="text" id="search" placeholder="Search by claim id, name, story…">
-      <div class="filter-row">
-        <select id="f-route">
-          <option value="">All routes</option>
-          <option value="auto_approve">Auto-approve</option>
-          <option value="auto_deny">Auto-deny</option>
-          <option value="escalate">Escalate</option>
-        </select>
-        <select id="f-status">
-          <option value="">All statuses</option>
-          <option value="active">Active</option>
-          <option value="lapsed">Lapsed</option>
-        </select>
-        <select id="f-cov">
-          <option value="">Any coverage</option>
-          <option value="collision">Collision</option>
-          <option value="comprehensive">Comprehensive</option>
-        </select>
-      </div>
-      <div class="count" id="catalog-count">Loading claims…</div>
-    </div>
-    <div class="catalog" id="catalog"></div>
-  </aside>
+<div class="wrap">
+  <!-- INTAKE -->
+  <div class="card">
+    <h3>File a claim</h3>
 
-  <!-- RIGHT WORKSPACE -->
-  <main class="workspace" id="workspace">
-    <div class="empty-state" id="empty">
-      <div>
-        <div style="font-size:15px;font-weight:600;margin-bottom:6px;">Pick a claim to begin</div>
-        Browse the seeded claims on the left. Selecting one loads its policy, story,
-        and DB truth damage. Then run the Arch 2 pipeline to see a live decision.
+    <label class="field">Architecture</label>
+    <div class="seg" id="arch-seg">
+      <button type="button" data-arch="2" class="on">
+        <b>Arch 2 — Split pipeline</b><span>fixed 3-stage sequence · story-blind</span>
+      </button>
+      <button type="button" data-arch="3">
+        <b>Arch 3 — PEV agent</b><span>adaptive investigation · reads the story</span>
+      </button>
+    </div>
+
+    <label class="field" for="customer">Customer</label>
+    <select id="customer"><option value="">Loading customers…</option></select>
+
+    <div class="policy-strip" id="policy-strip">
+      <div class="kv-grid" id="policy-grid"></div>
+    </div>
+
+    <div class="drop" id="drop">
+      <input type="file" id="file" accept="image/*" class="hidden">
+      <div id="drop-empty">
+        <div style="font-size:22px;">📷</div>
+        <div style="font-weight:600;margin-top:4px;">Drop a damage photo here, or click to choose</div>
+        <div class="hint">This upload files a new claim for the selected customer.</div>
+      </div>
+      <img class="preview hidden" id="preview" alt="preview">
+    </div>
+
+    <div id="story-wrap" class="hidden">
+      <label class="field" for="story">Incident story <span style="color:var(--muted);font-weight:400;">— what the customer says happened</span></label>
+      <textarea class="story" id="story" placeholder="e.g. A hailstorm came through overnight and dented the roof and hood."></textarea>
+      <div class="hint" style="margin-top:6px;">
+        Treated as untrusted input — delimited and injection-scanned before any model sees it.
       </div>
     </div>
-  </main>
+
+    <button class="run-btn" id="run" disabled>▶ Run Arch 2 pipeline (live)</button>
+    <div class="run-note" id="run-note">Makes 3 live VLM calls (gatekeeper · segmenter · damage assessor)</div>
+
+    <div class="scope-note" id="scope-note">
+      <b>Out of scope (not faked):</b> no incident-story input — that's an Arch 3 feature; Arch 2 is story-blind.
+      No Arch 1 comparison (not built).
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results"></div>
 </div>
 
 <script>
@@ -327,224 +292,169 @@ const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls)
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const routeLabel = (r) => ({auto_approve:"Auto-approve", auto_deny:"Auto-deny", escalate:"Escalate", retake:"Retake"}[r] || r);
 
-let claims = [];
-let selectedId = null;
+let customers = [];
+let selectedFile = null;
+let arch = "2";
 
-async function loadClaims() {
+const ARCH_UI = {
+  "2": {
+    headerSub: "Architecture 2 — Split Pipeline · live demo",
+    runLabel: "▶ Run Arch 2 pipeline (live)",
+    runNote: "Makes 3 live VLM calls (gatekeeper · segmenter · damage assessor)",
+    scope: "<b>Out of scope (not faked):</b> no incident-story input — that's an Arch 3 feature; " +
+           "Arch 2 is story-blind. No Arch 1 comparison (not built).",
+  },
+  "3": {
+    headerSub: "Architecture 3 — PEV Agent · live demo",
+    runLabel: "▶ Run Arch 3 agent (live)",
+    runNote: "Adaptive: up to 8 tool calls and 2 replans — the trace below shows what it actually chose",
+    scope: "<b>Out of scope (not faked):</b> no Arch 1 comparison (not built). " +
+           "The agent has no payout tool — the dollar figure comes from the same rules engine Arch 2 uses.",
+  },
+};
+
+function setArch(next) {
+  arch = next;
+  const ui = ARCH_UI[next];
+  for (const b of document.querySelectorAll("#arch-seg button")) b.classList.toggle("on", b.dataset.arch === next);
+  document.getElementById("header-sub").textContent = ui.headerSub;
+  document.getElementById("run").textContent = ui.runLabel;
+  document.getElementById("run-note").textContent = ui.runNote;
+  document.getElementById("scope-note").innerHTML = ui.scope;
+  document.getElementById("story-wrap").classList.toggle("hidden", next !== "3");
+  document.getElementById("results").innerHTML = "";
+}
+
+for (const b of document.querySelectorAll("#arch-seg button")) {
+  b.addEventListener("click", () => setArch(b.dataset.arch));
+}
+
+async function loadCustomers() {
+  const sel = document.getElementById("customer");
   try {
-    const res = await fetch("/api/claims");
+    const res = await fetch("/api/customers");
     if (!res.ok) throw new Error("HTTP " + res.status);
-    claims = await res.json();
-    renderCatalog();
+    customers = await res.json();
+    sel.innerHTML = '<option value="">Select a customer…</option>';
+    for (const c of customers) {
+      const opt = document.createElement("option");
+      opt.value = c.customer_id;
+      const label = (c.name || c.customer_id) + " — " + c.car_class + " · " + c.policy_status;
+      opt.textContent = label;
+      sel.appendChild(opt);
+    }
   } catch (e) {
-    document.getElementById("catalog-count").textContent = "Failed to load claims: " + e.message;
+    sel.innerHTML = '<option value="">Failed to load customers: ' + esc(e.message) + '</option>';
   }
 }
 
-function policySummary(c) {
-  const p = c.policy || {};
-  return {
-    name: p.name || p.customer_id || "—",
-    car_class: p.car_class || "—",
-    status: p.policy_status || "—",
-    collision: !!p.collision_active,
-    comprehensive: !!p.comprehensive_active,
+function renderPolicy(c) {
+  const strip = document.getElementById("policy-strip");
+  const grid = document.getElementById("policy-grid");
+  grid.innerHTML = "";
+  if (!c) { strip.classList.remove("show"); return; }
+
+  const cell = (k, vhtml) => {
+    const d = el("div", "kv-cell");
+    d.appendChild(el("div", "k", esc(k)));
+    d.appendChild(el("div", "v", vhtml));
+    return d;
   };
+  grid.appendChild(cell("Status", '<span class="badge status-'+c.policy_status+'">'+esc(c.policy_status)+'</span>'));
+  const covs = [];
+  if (c.collision_active) covs.push('<span class="badge cov">collision</span>');
+  if (c.comprehensive_active) covs.push('<span class="badge cov">comprehensive</span>');
+  grid.appendChild(cell("Coverage", covs.length ? '<div class="chips">'+covs.join("")+'</div>' : "—"));
+  grid.appendChild(cell("Collision limit", c.collision_active ? money(c.collision_limit) : "—"));
+  grid.appendChild(cell("Comprehensive limit", c.comprehensive_active ? money(c.comprehensive_limit) : "—"));
+  grid.appendChild(cell("Deductible", money(c.deductible)));
+  strip.classList.add("show");
 }
 
-function filtered() {
-  const q = document.getElementById("search").value.trim().toLowerCase();
-  const fr = document.getElementById("f-route").value;
-  const fs = document.getElementById("f-status").value;
-  const fc = document.getElementById("f-cov").value;
-  return claims.filter(c => {
-    const ps = policySummary(c);
-    if (fr && (c.preview_route || c.preview && c.preview.route) !== fr) return false;
-    if (fs && ps.status !== fs) return false;
-    if (fc === "collision" && !ps.collision) return false;
-    if (fc === "comprehensive" && !ps.comprehensive) return false;
-    if (q) {
-      const hay = [c.claim_id, ps.name, c.claim_story, ps.car_class].join(" ").toLowerCase();
-      if (!hay.includes(q)) return false;
-    }
-    return true;
-  });
+function updateRunState() {
+  const cid = document.getElementById("customer").value;
+  document.getElementById("run").disabled = !(cid && selectedFile);
 }
 
-function previewRoute(c) {
-  return c.preview_route || (c.preview && c.preview.route) || null;
+// customer select
+document.getElementById("customer").addEventListener("change", (e) => {
+  const c = customers.find(x => x.customer_id === e.target.value) || null;
+  renderPolicy(c);
+  updateRunState();
+});
+
+// file handling
+const drop = document.getElementById("drop");
+const fileInput = document.getElementById("file");
+const preview = document.getElementById("preview");
+const dropEmpty = document.getElementById("drop-empty");
+
+function setFile(f) {
+  if (!f || !f.type.startsWith("image/")) return;
+  selectedFile = f;
+  const url = URL.createObjectURL(f);
+  preview.src = url;
+  preview.classList.remove("hidden");
+  dropEmpty.classList.add("hidden");
+  drop.classList.add("has-file");
+  updateRunState();
 }
 
-function renderCatalog() {
-  const list = filtered();
-  const box = document.getElementById("catalog");
-  box.innerHTML = "";
-  document.getElementById("catalog-count").textContent =
-    list.length + " of " + claims.length + " claims";
+drop.addEventListener("click", () => fileInput.click());
+fileInput.addEventListener("change", (e) => { if (e.target.files[0]) setFile(e.target.files[0]); });
+drop.addEventListener("dragover", (e) => { e.preventDefault(); drop.classList.add("over"); });
+drop.addEventListener("dragleave", () => drop.classList.remove("over"));
+drop.addEventListener("drop", (e) => {
+  e.preventDefault(); drop.classList.remove("over");
+  if (e.dataTransfer.files[0]) setFile(e.dataTransfer.files[0]);
+});
 
-  for (const c of list) {
-    const ps = policySummary(c);
-    const card = el("div", "claim-card" + (c.claim_id === selectedId ? " selected" : ""));
-    card.onclick = () => selectClaim(c.claim_id);
+// run
+document.getElementById("run").addEventListener("click", runUpload);
 
-    const img = el("img", "thumb");
-    img.loading = "lazy";
-    img.src = "/api/image/" + encodeURIComponent(c.photo_file);
-    img.onerror = () => { img.style.visibility = "hidden"; };
-    card.appendChild(img);
-
-    const meta = el("div", "meta");
-    meta.appendChild(el("div", "name", esc(ps.name)));
-    meta.appendChild(el("div", "line", esc(ps.car_class) + " · " + esc(c.claim_id)));
-
-    const chips = el("div", "chips");
-    chips.appendChild(el("span", "badge status-" + ps.status, esc(ps.status)));
-    if (ps.collision) chips.appendChild(el("span", "badge cov", "collision"));
-    if (ps.comprehensive) chips.appendChild(el("span", "badge cov", "comp"));
-    const pr = previewRoute(c);
-    if (pr) chips.appendChild(el("span", "badge route-" + pr, routeLabel(pr)));
-    meta.appendChild(chips);
-
-    if (c.claim_story) meta.appendChild(el("div", "story", esc(c.claim_story)));
-    card.appendChild(meta);
-    box.appendChild(card);
-  }
-}
-
-async function selectClaim(id) {
-  selectedId = id;
-  renderCatalog();
-  const ws = document.getElementById("workspace");
-  ws.innerHTML = '<div class="loading">Loading claim…</div>';
-  try {
-    const res = await fetch("/api/claims/" + encodeURIComponent(id));
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    const c = await res.json();
-    renderWorkspace(c);
-  } catch (e) {
-    ws.innerHTML = '<div class="err">Failed to load claim: ' + esc(e.message) + '</div>';
-  }
-}
-
-function damageChips(instances, opts) {
-  opts = opts || {};
-  const box = el("div");
-  if (!instances || !instances.length) { box.appendChild(el("div", "sev", "— none —")); return box; }
-  for (const d of instances) {
-    const row = el("div", "dmg-row");
-    row.appendChild(el("span", "cat", esc(d.damage_category)));
-    const bits = [];
-    if (d.severity) bits.push(d.severity);
-    if (d.operation) bits.push(d.operation);
-    if (d.coverage_type) bits.push(d.coverage_type);
-    row.appendChild(el("span", "sev", esc(bits.join(" · "))));
-    if (opts.confidence && d.confidence != null) {
-      const cl = el("span", "conf-line");
-      const bar = el("span", "conf-bar"); const fill = el("i"); fill.style.width = (d.confidence*100)+"%"; bar.appendChild(fill);
-      cl.appendChild(bar); cl.appendChild(el("span", null, pct(d.confidence)));
-      cl.style.marginLeft = "auto";
-      row.appendChild(cl);
-    }
-    box.appendChild(row);
-  }
-  return box;
-}
-
-function renderWorkspace(c) {
-  const ps = policySummary(c);
-  const p = c.policy || {};
-  const ws = document.getElementById("workspace");
-  ws.innerHTML = "";
-
-  const grid = el("div", "ws-grid");
-
-  // Left column: photo + policy
-  const leftCol = el("div");
-  const photoCard = el("div", "card");
-  photoCard.appendChild(el("h3", null, "Claim photo"));
-  const img = el("img", "photo");
-  img.src = "/api/image/" + encodeURIComponent(c.photo_file);
-  img.alt = c.photo_file;
-  photoCard.appendChild(img);
-  leftCol.appendChild(photoCard);
-
-  const polCard = el("div", "card"); polCard.style.marginTop = "16px";
-  polCard.appendChild(el("h3", null, "Policy"));
-  const kv = (k, v) => { const r = el("div","kv"); r.appendChild(el("span","k",esc(k))); r.appendChild(el("span","v",v)); return r; };
-  polCard.appendChild(kv("Customer", esc(ps.name)));
-  polCard.appendChild(kv("Car class", esc(ps.car_class)));
-  const statusV = '<span class="badge status-'+ps.status+'">'+esc(ps.status)+'</span>';
-  polCard.appendChild(kv("Status", statusV));
-  polCard.appendChild(kv("Collision", ps.collision ? "active · limit "+money(p.collision_limit) : "—"));
-  polCard.appendChild(kv("Comprehensive", ps.comprehensive ? "active · limit "+money(p.comprehensive_limit) : "—"));
-  polCard.appendChild(kv("Deductible", money(p.deductible)));
-  leftCol.appendChild(polCard);
-  grid.appendChild(leftCol);
-
-  // Right column: story, truth damage, run
-  const rightCol = el("div");
-  const storyCard = el("div", "card");
-  storyCard.appendChild(el("h3", null, "Claim story"));
-  storyCard.appendChild(el("div", null, esc(c.claim_story || "—")));
-  rightCol.appendChild(storyCard);
-
-  const truthCard = el("div", "card"); truthCard.style.marginTop = "16px";
-  truthCard.appendChild(el("h3", null, "Truth damage (from DB)"));
-  truthCard.appendChild(damageChips(c.truth_damage || c.damage_instances || []));
-  rightCol.appendChild(truthCard);
-
-  // Deterministic preview
-  const prev = c.preview || (c.preview_route ? {route: c.preview_route, payout: c.preview_payout} : null);
-  if (prev) {
-    const pc = el("div", "card"); pc.style.marginTop = "16px";
-    pc.appendChild(el("h3", null, "Deterministic preview (offline, no VLM)"));
-    const line = el("div"); line.style.display = "flex"; line.style.gap = "10px"; line.style.alignItems = "center";
-    line.innerHTML = '<span class="badge route-'+prev.route+'">'+routeLabel(prev.route)+'</span>'
-      + '<span style="font-weight:700;">'+money(prev.payout)+'</span>'
-      + '<span class="sev" style="color:var(--muted)">computed at confidence 1.0</span>';
-    pc.appendChild(line);
-    rightCol.appendChild(pc);
-  }
-
-  const runWrap = el("div", "card"); runWrap.style.marginTop = "16px";
-  const btn = el("button", "run-btn", "▶ Run Arch 2 pipeline (live)");
-  btn.onclick = () => runPipeline(c.claim_id, btn);
-  runWrap.appendChild(btn);
-  runWrap.appendChild(el("div", "run-note", "Makes 3 live VLM calls (gatekeeper · segmenter · damage assessor)"));
-  rightCol.appendChild(runWrap);
-
-  const results = el("div"); results.id = "results"; results.style.marginTop = "16px";
-  rightCol.appendChild(results);
-
-  grid.appendChild(rightCol);
-  ws.appendChild(grid);
-
-  const scope = el("div", "scope-note");
-  scope.innerHTML = "<b>Out of scope (not faked):</b> no arbitrary photo upload (Option A — payout needs a "
-    + "claim_id + policy); no live &ldquo;retake&rdquo; demo (no junk images curated yet); "
-    + "no Arch 1 / Arch 3 comparison (not built).";
-  ws.appendChild(scope);
-}
-
-async function runPipeline(id, btn) {
+async function runUpload() {
+  const cid = document.getElementById("customer").value;
+  if (!cid || !selectedFile) return;
+  const btn = document.getElementById("run");
   btn.disabled = true;
   btn.innerHTML = '<span style="display:inline-flex;gap:8px;align-items:center;justify-content:center;"><span class="spinner"></span> Running…</span>';
   const results = document.getElementById("results");
   results.innerHTML = "";
+
+  if (arch === "3") {
+    try {
+      await runArch3Stream(cid, results);
+    } catch (e) {
+      results.appendChild(el("div", "err", "Run failed: " + esc(e.message)));
+    } finally {
+      btn.disabled = false;
+      btn.textContent = ARCH_UI[arch].runLabel;
+      updateRunState();
+    }
+    return;
+  }
+
   try {
-    const res = await fetch("/api/claims/" + encodeURIComponent(id) + "/run", { method: "POST" });
+    const fd = new FormData();
+    fd.append("customer_id", cid);
+    fd.append("photo", selectedFile);
+    fd.append("arch", arch);
+    if (arch === "3") fd.append("claim_story", document.getElementById("story").value);
+    const res = await fetch("/api/upload", { method: "POST", body: fd });
     if (!res.ok) {
       let msg = "HTTP " + res.status;
       try { const j = await res.json(); if (j.detail) msg = j.detail; } catch(_) {}
       throw new Error(msg);
     }
-    const r = await res.json();
-    renderResult(r, results, id);
+    const body = await res.json();
+    if (body.arch === "3") renderArch3(body.result, results);
+    else renderResult(body.result, results);
   } catch (e) {
-    results.innerHTML = '<div class="err">Pipeline failed: ' + esc(e.message) + '</div>';
+    results.innerHTML = '<div class="err">Run failed: ' + esc(e.message) + '</div>';
   } finally {
     btn.disabled = false;
-    btn.textContent = "▶ Run Arch 2 pipeline (live)";
+    btn.textContent = ARCH_UI[arch].runLabel;
+    updateRunState();
   }
 }
 
@@ -554,7 +464,7 @@ function stageEl(num, title, tag, skipped) {
   const head = el("div", "head");
   head.appendChild(el("span", "num", String(num)));
   head.appendChild(el("span", "title", esc(title)));
-  if (tag) { const t = el("span", "tag"); t.textContent = tag; head.appendChild(t); }
+  if (tag) head.appendChild(el("span", "tag", esc(tag)));
   s.appendChild(head);
   const body = el("div", "body");
   s.appendChild(body);
@@ -570,36 +480,52 @@ function confLine(label, v) {
   return cl;
 }
 
-function renderResult(r, box, claimId) {
-  const truthClaim = claims.find(c => c.claim_id === claimId);
-
-  // Banner
-  const banner = el("div", "banner route-" + r.route);
-  const rc = el("div", "b-col");
-  rc.appendChild(el("span", "b-label", "Route"));
-  rc.appendChild(el("span", "route-name", routeLabel(r.route)));
-  banner.appendChild(rc);
-  const pc = el("div", "b-col");
-  pc.appendChild(el("span", "b-label", "Payout"));
-  pc.appendChild(el("span", "payout", money(r.payout)));
-  banner.appendChild(pc);
-  const cc = el("div", "b-col");
-  cc.appendChild(el("span", "b-label", "Gating confidence"));
-  cc.appendChild(el("span", "route-name", pct(r.confidence)));
-  cc.querySelector(".route-name").style.fontSize = "20px";
-  banner.appendChild(cc);
-  banner.appendChild(el("div", "spacer"));
-  if (r.reasons && r.reasons.length) {
-    const w = el("div", "b-col");
-    w.appendChild(el("span", "b-label", "Why"));
-    w.appendChild(el("span", "why", esc(r.reasons.join(", "))));
-    banner.appendChild(w);
+function damageRows(instances) {
+  const box = el("div");
+  if (!instances || !instances.length) { box.appendChild(el("div", "sev", "— none —")); return box; }
+  for (const d of instances) {
+    const row = el("div", "dmg-row");
+    row.appendChild(el("span", "cat", esc(d.damage_category)));
+    const bits = [];
+    if (d.severity) bits.push(d.severity);
+    if (d.operation) bits.push(d.operation);
+    if (d.coverage_type) bits.push(d.coverage_type);
+    row.appendChild(el("span", "sev", esc(bits.join(" · "))));
+    if (d.confidence != null) {
+      const cl = el("span", "conf-line"); cl.style.marginLeft = "auto"; cl.style.marginTop = "0";
+      const bar = el("span", "conf-bar"); const fill = el("i"); fill.style.width = (d.confidence*100)+"%"; bar.appendChild(fill);
+      cl.appendChild(bar); cl.appendChild(el("span", null, pct(d.confidence)));
+      row.appendChild(cl);
+    }
+    box.appendChild(row);
   }
+  return box;
+}
+
+function verdictBanner(r, box) {
+  const banner = el("div", "banner route-" + r.route);
+  const add = (label, valueHtml, cls) => {
+    const c = el("div", "b-col");
+    c.appendChild(el("span", "b-label", label));
+    c.appendChild(el("span", cls || "route-name", valueHtml));
+    banner.appendChild(c);
+  };
+  add("Route", routeLabel(r.route));
+  add("Payout", money(r.payout), "payout");
+  add("Gating confidence", pct(r.confidence));
+  banner.appendChild(el("div", "spacer"));
+  if (r.claim_id) add("New claim", esc(r.claim_id), "why");
+  if (r.reasons && r.reasons.length) add("Why", esc(r.reasons.join(", ")), "why");
   box.appendChild(banner);
+}
+
+function renderResult(r, box) {
+  verdictBanner(r, box);
 
   box.appendChild(el("div", "teach",
     "&ldquo;The model read the damage. The code computed the dollars. No model emitted this number.&rdquo;"));
 
+  // Stage 1 — gatekeeper
   const gate = r.gatekeeper || {};
   const s1 = stageEl(1, "Gatekeeper", "is the photo usable?");
   s1.body.appendChild(el("div", null, (gate.valid ? "✓ valid" : "✗ invalid") + " — " + esc(gate.reason || "")));
@@ -623,21 +549,14 @@ function renderResult(r, box, claimId) {
   } else s2.body.appendChild(el("div", "sev", "no panels reported"));
   box.appendChild(s2.root);
 
-  // Stage 3 — damage assessor: predicted vs truth
-  const s3 = stageEl(3, "Damage assessor", "perception — this is what can be wrong");
-  const cmp = el("div", "compare");
-  const predCol = el("div"); predCol.appendChild(el("h4", null, "Predicted (VLM)"));
-  predCol.appendChild(damageChips(r.damage || [], { confidence: true }));
-  cmp.appendChild(predCol);
-  const truthCol = el("div"); truthCol.appendChild(el("h4", null, "Truth (DB)"));
-  truthCol.appendChild(damageChips(truthClaim ? (truthClaim.truth_damage || truthClaim.damage_instances || []) : []));
-  cmp.appendChild(truthCol);
-  s3.body.appendChild(cmp);
+  // Stage 3 — damage assessor (fresh claim: the photo is the source of truth)
+  const s3 = stageEl(3, "Damage assessor", "perception — establishes the claim's damage of record");
+  s3.body.appendChild(damageRows(r.damage || []));
   box.appendChild(s3.root);
 
   if (!r.damage || !r.damage.length) {
     const s = stageEl(4, "Rules engine", "not reached — no damage detected", true);
-    s.body.appendChild(el("div", "sev", "Vision saw no assessable damage while the claim asserts it — escalated to a human."));
+    s.body.appendChild(el("div", "sev", "Vision saw no assessable damage — nothing to price."));
     box.appendChild(s.root);
     return;
   }
@@ -669,11 +588,222 @@ function renderResult(r, box, claimId) {
   box.appendChild(s4.root);
 }
 
-// wire filters
-for (const el0 of ["search", "f-route", "f-status", "f-cov"]) {
-  document.getElementById(el0).addEventListener("input", renderCatalog);
+// --- Arch 3 -----------------------------------------------------------------
+
+const CHECK_LABEL = {
+  image_quality: "Image quality", damage_type: "Damage type",
+  story_consistency: "Story consistency", claimed_peril: "Claimed peril",
+  policy_coverage: "Policy coverage", policy_dates: "Policy dates",
+};
+const CHECK_ORDER = Object.keys(CHECK_LABEL);
+
+function meter(used, max) {
+  const m = el("span", "meter" + (used >= max ? " warn" : ""));
+  const fill = el("i");
+  fill.style.width = Math.min(100, (used / max) * 100) + "%";
+  m.appendChild(fill);
+  return m;
 }
-loadClaims();
+
+// A trace panel that can be filled live (streaming) or all at once.
+function tracePanel() {
+  const s = stageEl(1, "Agent trace", "planner → executor → verifier, bounded");
+  const budget = el("div", "budget");
+  const mk = (label, max) => {
+    const d = el("div", "m");
+    d.appendChild(el("span", null, esc(label)));
+    const holder = el("span");
+    d.appendChild(holder);
+    const num = el("b", null, "0 / " + max);
+    d.appendChild(num);
+    return { root: d, set: (used) => { holder.innerHTML = ""; holder.appendChild(meter(used, max)); num.textContent = used + " / " + max; } };
+  };
+  const calls = mk("Tool calls", 8);
+  const replans = mk("Replans", 2);
+  calls.set(0); replans.set(0);
+  budget.appendChild(calls.root);
+  budget.appendChild(replans.root);
+  s.body.appendChild(budget);
+
+  const trace = el("div", "trace");
+  trace.style.marginTop = "12px";
+  s.body.appendChild(trace);
+
+  let live = null;
+  return {
+    root: s.root,
+    // A pulsing placeholder so the gap between nodes reads as work, not a hang.
+    waiting(label) {
+      if (!live) { live = el("div", "tnode live"); trace.appendChild(live); }
+      live.innerHTML = "";
+      live.appendChild(el("span", "n", esc(label)));
+      live.appendChild(el("span", "s", "working…"));
+    },
+    step(t) {
+      const n = el("div", "tnode fresh n-" + (t.node || ""));
+      n.appendChild(el("span", "n", esc(t.node || "?")));
+      n.appendChild(el("span", "s", esc(t.summary || "")));
+      if (live) trace.insertBefore(n, live); else trace.appendChild(n);
+    },
+    budget(used, rep) { calls.set(used || 0); replans.set(rep || 0); },
+    done() { if (live) { live.remove(); live = null; }
+             if (!trace.children.length) trace.appendChild(el("div", "sev", "no trajectory recorded")); },
+  };
+}
+
+// After a node lands, the graph's next move is fixed enough to name honestly.
+const NEXT_LABEL = { planner: "executor", executor: "verifier", verifier: "planner", claim: "planner" };
+
+function renderArch3(r, box) {
+  verdictBanner(r, box);
+  box.appendChild(el("div", "teach",
+    "&ldquo;The agent chose which checks to run and gathered evidence. " +
+    "It has no payout tool — the same rules engine computed the dollars.&rdquo;"));
+
+  const tp = tracePanel();
+  for (const t of (r.trajectory || [])) tp.step(t);
+  tp.budget(r.tool_calls, r.replans);
+  tp.done();
+  box.appendChild(tp.root);
+
+  renderArch3Evidence(r, box);
+}
+
+async function runArch3Stream(cid, box) {
+  const bannerSlot = el("div");
+  box.appendChild(bannerSlot);
+  box.appendChild(el("div", "teach",
+    "&ldquo;The agent chooses each check as it goes. Watch it decide — " +
+    "then note that the dollars come from the rules engine, not the model.&rdquo;"));
+
+  const tp = tracePanel();
+  box.appendChild(tp.root);
+  tp.waiting("planner");
+
+  const fd = new FormData();
+  fd.append("customer_id", cid);
+  fd.append("photo", selectedFile);
+  fd.append("claim_story", document.getElementById("story").value);
+
+  const res = await fetch("/api/upload/stream", { method: "POST", body: fd });
+  if (!res.ok) {
+    let msg = "HTTP " + res.status;
+    try { const j = await res.json(); if (j.detail) msg = j.detail; } catch (_) {}
+    throw new Error(msg);
+  }
+
+  const reader = res.body.getReader();
+  const dec = new TextDecoder();
+  let buf = "", toolCalls = 0, finished = false;
+
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    buf += dec.decode(value, { stream: true });
+    // SSE frames are separated by a blank line.
+    const frames = buf.split("\n\n");
+    buf = frames.pop();
+    for (const frame of frames) {
+      const line = frame.split("\n").find(l => l.startsWith("data:"));
+      if (!line) continue;
+      const msg = JSON.parse(line.slice(5).trim());
+
+      if (msg.type === "error") throw new Error(msg.payload.detail);
+      if (msg.type === "claim") { tp.waiting("planner"); continue; }
+      if (msg.type === "step") {
+        tp.step(msg.payload);
+        // Executor visits are the tool calls; the trace shows the budget burning down.
+        if (msg.payload.node === "executor") tp.budget(Math.min(8, ++toolCalls), 0);
+        const next = NEXT_LABEL[msg.payload.node];
+        if (next) tp.waiting(next);
+        continue;
+      }
+      if (msg.type === "result") {
+        finished = true;
+        const r = msg.payload;
+        tp.budget(r.tool_calls, r.replans);
+        tp.done();
+        verdictBanner(r, bannerSlot);
+        renderArch3Evidence(r, box);
+      }
+    }
+  }
+  if (!finished) { tp.done(); throw new Error("stream ended before the agent returned a result"); }
+}
+
+function renderArch3Evidence(r, box) {
+  // Stage 2 — the evidence package (the only thing the agent produces)
+  const s2 = stageEl(2, "Evidence package", "facts only — no dollar figure lives here");
+  const items = (r.evidence && r.evidence.items) || {};
+  const present = CHECK_ORDER.filter(k => items[k]);
+  if (!present.length) s2.body.appendChild(el("div", "sev", "no checks resolved"));
+  for (const key of present) {
+    const it = items[key];
+    const card = el("div", "ev-card");
+    card.appendChild(el("span", "name", esc(CHECK_LABEL[key] || key)));
+    card.appendChild(el("span", "st " + it.status, esc(it.status)));
+    card.appendChild(el("span", "detail", esc(it.detail || "")));
+    s2.body.appendChild(card);
+  }
+  const skipped = CHECK_ORDER.filter(k => !items[k]);
+  if (skipped.length) {
+    s2.body.appendChild(el("div", "sev", "Not run: " +
+      esc(skipped.map(k => CHECK_LABEL[k] || k).join(", "))));
+  }
+  box.appendChild(s2.root);
+
+  // Stage 3 — the damage the agent perceived, and the peril it read from the story.
+  // Together these become the claim's damage rows, which is what gets priced.
+  const dmg = items.damage_type;
+  const peril = items.claimed_peril;
+  const instances = (dmg && dmg.data && dmg.data.instances) || [];
+  const perilValue = (peril && peril.data && peril.data.peril) || "unknown";
+  const coverage = (perilValue === "collision" || perilValue === "comprehensive") ? perilValue : "collision";
+  const s3 = stageEl(3, "Damage of record", "perceived damage + inferred peril → claim rows");
+  s3.body.appendChild(damageRows(instances.map(i => Object.assign({}, i, { coverage_type: coverage }))));
+  const pchip = el("div", "chips");
+  pchip.style.marginTop = "9px";
+  pchip.appendChild(el("span", "badge cov", "peril: " + esc(perilValue)));
+  pchip.appendChild(el("span", "badge cov", "billed to: " + esc(coverage) + " pool"));
+  s3.body.appendChild(pchip);
+  if (perilValue === "unknown" && instances.length) {
+    s3.body.appendChild(el("div", "sev",
+      "Peril unresolved — defaulted to the collision pool, and the agent flagged it."));
+  }
+  box.appendChild(s3.root);
+
+  // Stage 4 — adjudication
+  const reached = r.route !== "escalate" || r.payout != null;
+  const s4 = stageEl(4, "Rules engine",
+    reached ? "pure code — no model touched this number" : "escalated before adjudication", !reached);
+  if (!reached) {
+    s4.body.appendChild(el("div", "sev",
+      "Handed to a human with the evidence package above. No payout computed."));
+  } else {
+    const bd = el("div", "breakdown");
+    const row = (k, v, neg) => {
+      const rr = el("div", "row");
+      rr.appendChild(el("span", null, esc(k)));
+      rr.appendChild(el("span", neg ? "neg" : null, v));
+      return rr;
+    };
+    if (r.deductible_applied != null) bd.appendChild(row("Deductible", "− " + money(r.deductible_applied), true));
+    bd.appendChild(row("Payout", money(r.payout)));
+    const tot = el("div", "row total");
+    tot.appendChild(el("span", null, "Escalation gate"));
+    tot.appendChild(el("span", null, "≤ $2,000 &amp; conf ≥ 75%"));
+    bd.appendChild(tot);
+    s4.body.appendChild(bd);
+  }
+  if (r.reasons && r.reasons.length) {
+    const rp = el("div"); rp.style.marginTop = "8px";
+    for (const reason of r.reasons) rp.appendChild(el("span", "reason-pill", esc(reason)));
+    s4.body.appendChild(rp);
+  }
+  box.appendChild(s4.root);
+}
+
+loadCustomers();
 </script>
 </body>
 </html>

@@ -1,0 +1,52 @@
+{
+  "golden_version": "v2",
+  "n": 1,
+  "route_accuracy": 1.0,
+  "base_route_accuracy": 1.0,
+  "mismatch_detected": 0,
+  "mismatch_total": 0,
+  "payout_accuracy_where_truth_pays": 1.0,
+  "escalation": {
+    "precision": null,
+    "recall": null,
+    "true_escalate": 0,
+    "pred_escalate": 0
+  },
+  "rows": [
+    {
+      "claim_id": "CLM-00001",
+      "mismatch_type": null,
+      "true_route": "auto_approve",
+      "pred_route": "auto_approve",
+      "route_ok": true,
+      "true_payout": 290.0,
+      "pred_payout": 290.0,
+      "payout_ok": true,
+      "confidence": 0.95,
+      "tool_calls": 6,
+      "replans": 0,
+      "pred_reasons": [],
+      "trajectory": [
+        "planner: next=policy_dates",
+        "executor: policy_dates -> ok (call 1)",
+        "verifier: continue",
+        "planner: next=claimed_peril",
+        "executor: claimed_peril -> ok (call 2)",
+        "verifier: continue",
+        "planner: next=policy_coverage",
+        "executor: policy_coverage -> ok (call 3)",
+        "verifier: continue",
+        "planner: next=image_quality",
+        "executor: image_quality -> ok (call 4)",
+        "verifier: continue",
+        "planner: next=damage_type",
+        "executor: damage_type -> ok (call 5)",
+        "verifier: continue",
+        "planner: next=story_consistency",
+        "executor: story_consistency -> ok (call 6)",
+        "verifier: complete",
+        "adjudicate: route=auto_approve payout=290.0"
+      ]
+    }
+  ]
+}

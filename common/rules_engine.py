@@ -110,3 +110,74 @@ def compute_payout(
         route=route, payout=payout, deductible_applied=policy["deductible"],
         total_cost=costs["total_cost"], covered_cost=covered_cost, reasons=reasons,
     )
+
+
+def compute_payout_live(
+    conn: sqlite3.Connection,
+    claim_id: str,
+    confidence: float,
+    *,
+    auto_approve_max: float = AUTO_APPROVE_MAX_PAYOUT,
+    confidence_threshold: float = CONFIDENCE_THRESHOLD,
+) -> PayoutResult:
+    # Live-upload path (DEPLOY_PLAN "Coverage handling -- LOCKED: Option 1").
+    # A fresh uploaded photo has no story and no stored coverage_type, so Arch 2
+    # (story-blind by design) cannot assign the collision vs comprehensive peril.
+    # It therefore does NOT split the pools: any damage is covered if the policy
+    # is active and holds any coverage, capped by the single limit. Consequence
+    # (accepted): it cannot deny a peril the customer didn't buy -- that
+    # judgement is Arch 3's job. The eval path (compute_payout) is unchanged.
+    policy = policy_lookup.get_policy_for_claim(conn, claim_id)
+    if policy is None:
+        raise ValueError(f"no policy found for claim_id={claim_id!r}")
+
+    if policy["policy_status"] == "lapsed":
+        return PayoutResult(
+            route="auto_deny", payout=None, deductible_applied=None,
+            total_cost=0.0, covered_cost=0.0, reasons=["policy_lapsed"],
+        )
+
+    costs = cost_lookup.claim_costs_by_coverage(conn, claim_id, policy["car_class"])
+    total_cost = costs["total_cost"]
+
+    # Single pool: the only coverage question is "is any coverage active".
+    active_limits = []
+    if policy["collision_active"]:
+        active_limits.append(policy["collision_limit"])
+    if policy["comprehensive_active"]:
+        active_limits.append(policy["comprehensive_limit"])
+
+    if not active_limits or total_cost <= 0:
+        return PayoutResult(
+            route="auto_deny", payout=None, deductible_applied=None,
+            total_cost=total_cost, covered_cost=0.0, reasons=["not_covered"],
+        )
+
+    # Seeded policies set collision_limit == comprehensive_limit, so this is the
+    # single unambiguous number; max() is defensive if that ever diverges.
+    applicable_limit = max(active_limits)
+    covered_cost = min(total_cost, applicable_limit)
+
+    if policy["deductible"] >= applicable_limit:
+        return PayoutResult(
+            route="escalate", payout=None, deductible_applied=None,
+            total_cost=total_cost, covered_cost=covered_cost,
+            reasons=["policy_deductible_exceeds_limit"],
+        )
+
+    payout = max(covered_cost - policy["deductible"], 0.0)
+
+    reasons: list[str] = []
+    if payout <= auto_approve_max and confidence >= confidence_threshold:
+        route = "auto_approve"
+    else:
+        route = "escalate"
+        if payout > auto_approve_max:
+            reasons.append("payout_above_auto_approve_threshold")
+        if confidence < confidence_threshold:
+            reasons.append("confidence_below_threshold")
+
+    return PayoutResult(
+        route=route, payout=payout, deductible_applied=policy["deductible"],
+        total_cost=total_cost, covered_cost=covered_cost, reasons=reasons,
+    )
