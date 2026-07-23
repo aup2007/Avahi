@@ -70,6 +70,10 @@ def make_policy(customer_id: str, archetype: dict, rng: random.Random) -> dict:
     make, model = rng.choice(VEHICLES[car_class])
     limit = round(rng.uniform(*archetype["limit_range"]), -1)
     deductible = round(rng.uniform(*archetype["deductible_range"]), -1)
+    # A deductible at/above the limit makes the policy structurally void -- no
+    # loss of any size ever recovers a dollar. Keep it meaningfully below the
+    # limit so every generated policy is a legitimate product.
+    deductible = min(deductible, round(limit * 0.7, -1))
 
     policy_data = {
         "name": f"{rng.choice(FIRST_NAMES)} {rng.choice(LAST_NAMES)}",

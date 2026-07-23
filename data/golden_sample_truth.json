@@ -1,0 +1,284 @@
+[
+  {
+    "claim_id": "CLM-00001",
+    "customer_id": "demo-cust12",
+    "photo_file": "000012.jpg",
+    "claim_story": "Sideswiped by another car while merging onto 5th Street.",
+    "true_damage": [
+      {
+        "damage_category": "tire flat",
+        "severity": "moderate",
+        "coverage_type": "collision"
+      },
+      {
+        "damage_category": "tire flat",
+        "severity": "moderate",
+        "coverage_type": "collision"
+      }
+    ],
+    "route": "auto_approve",
+    "payout": 290.0,
+    "deductible_applied": 300.0,
+    "total_cost": 590.0,
+    "covered_cost": 590.0,
+    "reasons": []
+  },
+  {
+    "claim_id": "CLM-00003",
+    "customer_id": "demo-cust9",
+    "photo_file": "000012.jpg",
+    "claim_story": "Attempted break-in in the the airport parking lot damaged the car.",
+    "true_damage": [
+      {
+        "damage_category": "tire flat",
+        "severity": "moderate",
+        "coverage_type": "comprehensive"
+      },
+      {
+        "damage_category": "tire flat",
+        "severity": "moderate",
+        "coverage_type": "comprehensive"
+      }
+    ],
+    "route": "auto_deny",
+    "payout": null,
+    "deductible_applied": null,
+    "total_cost": 0.0,
+    "covered_cost": 0.0,
+    "reasons": [
+      "policy_lapsed"
+    ]
+  },
+  {
+    "claim_id": "CLM-00004",
+    "customer_id": "demo-cust17",
+    "photo_file": "000012.jpg",
+    "claim_story": "Backed into a concrete pillar in the the office parking garage.",
+    "true_damage": [
+      {
+        "damage_category": "tire flat",
+        "severity": "moderate",
+        "coverage_type": "collision"
+      },
+      {
+        "damage_category": "tire flat",
+        "severity": "moderate",
+        "coverage_type": "collision"
+      }
+    ],
+    "route": "auto_deny",
+    "payout": null,
+    "deductible_applied": null,
+    "total_cost": 395.0,
+    "covered_cost": 0.0,
+    "reasons": [
+      "not_covered"
+    ]
+  },
+  {
+    "claim_id": "CLM-00006",
+    "customer_id": "demo-cust15",
+    "photo_file": "000040.jpg",
+    "claim_story": "Rear-ended at a red light on 5th Street.",
+    "true_damage": [
+      {
+        "damage_category": "scratch",
+        "severity": "minor",
+        "coverage_type": "collision"
+      },
+      {
+        "damage_category": "lamp broken",
+        "severity": "severe",
+        "coverage_type": "collision"
+      }
+    ],
+    "route": "auto_deny",
+    "payout": null,
+    "deductible_applied": null,
+    "total_cost": 0.0,
+    "covered_cost": 0.0,
+    "reasons": [
+      "policy_lapsed"
+    ]
+  },
+  {
+    "claim_id": "CLM-00011",
+    "customer_id": "demo-cust7",
+    "photo_file": "000044.jpg",
+    "claim_story": "Vandalized in the the grocery store lot -- panels keyed and glass broken.",
+    "true_damage": [
+      {
+        "damage_category": "dent",
+        "severity": "minor",
+        "coverage_type": "comprehensive"
+      },
+      {
+        "damage_category": "scratch",
+        "severity": "minor",
+        "coverage_type": "comprehensive"
+      },
+      {
+        "damage_category": "crack",
+        "severity": "moderate",
+        "coverage_type": "comprehensive"
+      },
+      {
+        "damage_category": "crack",
+        "severity": "moderate",
+        "coverage_type": "comprehensive"
+      }
+    ],
+    "route": "escalate",
+    "payout": 2210.0,
+    "deductible_applied": 150.0,
+    "total_cost": 2360.0,
+    "covered_cost": 2360.0,
+    "reasons": [
+      "payout_above_auto_approve_threshold"
+    ]
+  },
+  {
+    "claim_id": "CLM-00012",
+    "customer_id": "demo-cust17",
+    "photo_file": "000044.jpg",
+    "claim_story": "Vandalized in the downtown lot -- panels keyed and glass broken.",
+    "true_damage": [
+      {
+        "damage_category": "dent",
+        "severity": "minor",
+        "coverage_type": "comprehensive"
+      },
+      {
+        "damage_category": "scratch",
+        "severity": "minor",
+        "coverage_type": "comprehensive"
+      },
+      {
+        "damage_category": "crack",
+        "severity": "moderate",
+        "coverage_type": "comprehensive"
+      },
+      {
+        "damage_category": "crack",
+        "severity": "moderate",
+        "coverage_type": "comprehensive"
+      }
+    ],
+    "route": "auto_approve",
+    "payout": 612.5,
+    "deductible_applied": 390.0,
+    "total_cost": 1002.5,
+    "covered_cost": 1002.5,
+    "reasons": []
+  },
+  {
+    "claim_id": "CLM-00014",
+    "customer_id": "demo-cust20",
+    "photo_file": "000088.jpg",
+    "claim_story": "A tree branch fell on the car during a windstorm at the grocery store.",
+    "true_damage": [
+      {
+        "damage_category": "crack",
+        "severity": "moderate",
+        "coverage_type": "comprehensive"
+      }
+    ],
+    "route": "auto_approve",
+    "payout": 0.0,
+    "deductible_applied": 700.0,
+    "total_cost": 467.0,
+    "covered_cost": 467.0,
+    "reasons": []
+  },
+  {
+    "claim_id": "CLM-00015",
+    "customer_id": "demo-cust16",
+    "photo_file": "000090.jpg",
+    "claim_story": "A deer ran into the car at dusk on 5th Street.",
+    "true_damage": [
+      {
+        "damage_category": "glass shatter",
+        "severity": "severe",
+        "coverage_type": "comprehensive"
+      }
+    ],
+    "route": "auto_deny",
+    "payout": null,
+    "deductible_applied": null,
+    "total_cost": 492.5,
+    "covered_cost": 0.0,
+    "reasons": [
+      "not_covered"
+    ]
+  },
+  {
+    "claim_id": "CLM-00030",
+    "customer_id": "demo-cust10",
+    "photo_file": "000233.jpg",
+    "claim_story": "Sideswiped by another car while merging onto Elm Street.",
+    "true_damage": [
+      {
+        "damage_category": "glass shatter",
+        "severity": "severe",
+        "coverage_type": "collision"
+      }
+    ],
+    "route": "auto_approve",
+    "payout": 0.0,
+    "deductible_applied": 530.0,
+    "total_cost": 492.5,
+    "covered_cost": 492.5,
+    "reasons": []
+  },
+  {
+    "claim_id": "CLM-00054",
+    "customer_id": "demo-cust22",
+    "photo_file": "000513.jpg",
+    "claim_story": "Rear-ended at a red light on Route 9.",
+    "true_damage": [
+      {
+        "damage_category": "dent",
+        "severity": "minor",
+        "coverage_type": "collision"
+      },
+      {
+        "damage_category": "scratch",
+        "severity": "minor",
+        "coverage_type": "collision"
+      },
+      {
+        "damage_category": "scratch",
+        "severity": "minor",
+        "coverage_type": "collision"
+      },
+      {
+        "damage_category": "crack",
+        "severity": "moderate",
+        "coverage_type": "collision"
+      },
+      {
+        "damage_category": "crack",
+        "severity": "moderate",
+        "coverage_type": "collision"
+      },
+      {
+        "damage_category": "glass shatter",
+        "severity": "severe",
+        "coverage_type": "collision"
+      },
+      {
+        "damage_category": "lamp broken",
+        "severity": "severe",
+        "coverage_type": "collision"
+      }
+    ],
+    "route": "escalate",
+    "payout": 2114.0,
+    "deductible_applied": 600.0,
+    "total_cost": 2714.0,
+    "covered_cost": 2714.0,
+    "reasons": [
+      "payout_above_auto_approve_threshold"
+    ]
+  }
+]

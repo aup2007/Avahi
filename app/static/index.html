@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Avahi — Arch 2 Live Demo</title>
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --panel: #ffffff;
+    --panel-2: #f0f2f5;
+    --border: #dfe3e8;
+    --text: #1a1d21;
+    --muted: #6b7280;
+    --accent: #2563eb;
+    --green: #16a34a;
+    --green-bg: #dcfce7;
+    --amber: #d97706;
+    --amber-bg: #fef3c7;
+    --red: #dc2626;
+    --red-bg: #fee2e2;
+    --grey: #6b7280;
+    --grey-bg: #e5e7eb;
+    --shadow: 0 1px 2px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1115;
+      --panel: #181b20;
+      --panel-2: #1f242b;
+      --border: #2b313a;
+      --text: #e8eaed;
+      --muted: #9aa2ad;
+      --accent: #3b82f6;
+      --green: #4ade80;
+      --green-bg: #14311f;
+      --amber: #fbbf24;
+      --amber-bg: #3a2c07;
+      --red: #f87171;
+      --red-bg: #3a1414;
+      --grey: #9aa2ad;
+      --grey-bg: #2b313a;
+      --shadow: 0 1px 2px rgba(0,0,0,.4);
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  header h1 { font-size: 16px; margin: 0; font-weight: 650; }
+  header .sub { color: var(--muted); font-size: 12.5px; }
+  header .spacer { flex: 1; }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(320px, 380px) 1fr;
+    height: calc(100vh - 51px);
+  }
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; height: auto; }
+    .rail { max-height: 50vh; }
+  }
+
+  /* ---- Left rail ---- */
+  .rail {
+    border-right: 1px solid var(--border);
+    background: var(--panel);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .rail .filters {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .rail .filters input[type=text] {
+    width: 100%;
+    padding: 7px 9px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: var(--panel-2);
+    color: var(--text);
+    font-size: 13px;
+  }
+  .filter-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .filter-row select {
+    flex: 1;
+    min-width: 90px;
+    padding: 6px 7px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: var(--panel-2);
+    color: var(--text);
+    font-size: 12.5px;
+  }
+  .rail .count { font-size: 11.5px; color: var(--muted); padding: 0 2px; }
+  .catalog { overflow-y: auto; flex: 1; padding: 8px; }
+
+  .claim-card {
+    display: flex;
+    gap: 10px;
+    padding: 9px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    background: var(--panel);
+    transition: border-color .12s, box-shadow .12s;
+  }
+  .claim-card:hover { border-color: var(--accent); }
+  .claim-card.selected { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .claim-card .thumb {
+    width: 62px; height: 62px; flex-shrink: 0;
+    border-radius: 7px; object-fit: cover; background: var(--panel-2);
+  }
+  .claim-card .meta { min-width: 0; flex: 1; }
+  .claim-card .name { font-weight: 600; font-size: 13px; }
+  .claim-card .line { color: var(--muted); font-size: 11.5px; }
+  .claim-card .story {
+    font-size: 11.5px; color: var(--muted); margin-top: 3px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .chips { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 5px; }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10.5px; font-weight: 600; padding: 2px 7px;
+    border-radius: 999px; letter-spacing: .01em; white-space: nowrap;
+  }
+  .badge.route-auto_approve { background: var(--green-bg); color: var(--green); }
+  .badge.route-auto_deny   { background: var(--red-bg);   color: var(--red); }
+  .badge.route-escalate    { background: var(--amber-bg); color: var(--amber); }
+  .badge.route-retake      { background: var(--grey-bg);  color: var(--grey); }
+  .badge.status-active { background: var(--green-bg); color: var(--green); }
+  .badge.status-lapsed { background: var(--red-bg);   color: var(--red); }
+  .badge.cov { background: var(--panel-2); color: var(--muted); border: 1px solid var(--border); }
+  .badge.dmg { background: var(--panel-2); color: var(--text); border: 1px solid var(--border); }
+
+  /* ---- Right workspace ---- */
+  .workspace { overflow-y: auto; padding: 20px; }
+  .empty-state {
+    height: 100%; display: flex; align-items: center; justify-content: center;
+    color: var(--muted); text-align: center; padding: 40px;
+  }
+  .ws-grid { display: grid; grid-template-columns: 300px 1fr; gap: 20px; }
+  @media (max-width: 720px) { .ws-grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 11px; padding: 14px; box-shadow: var(--shadow);
+  }
+  .card h3 { margin: 0 0 10px; font-size: 12px; text-transform: uppercase;
+             letter-spacing: .04em; color: var(--muted); font-weight: 650; }
+  .photo { width: 100%; border-radius: 9px; background: var(--panel-2); display: block; }
+
+  .kv { display: flex; justify-content: space-between; gap: 12px; padding: 4px 0;
+        border-bottom: 1px dashed var(--border); font-size: 13px; }
+  .kv:last-child { border-bottom: none; }
+  .kv .k { color: var(--muted); }
+  .kv .v { font-weight: 550; text-align: right; }
+
+  .run-btn {
+    width: 100%; margin-top: 14px; padding: 12px;
+    background: var(--accent); color: #fff; border: none; border-radius: 9px;
+    font-size: 14px; font-weight: 650; cursor: pointer;
+  }
+  .run-btn:hover { filter: brightness(1.06); }
+  .run-btn:disabled { opacity: .55; cursor: default; }
+  .run-note { text-align: center; font-size: 11px; color: var(--muted); margin-top: 6px; }
+
+  /* result banner */
+  .banner {
+    border-radius: 11px; padding: 16px 18px; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 18px; border: 1px solid var(--border);
+  }
+  .banner.route-auto_approve { background: var(--green-bg); border-color: var(--green); }
+  .banner.route-auto_deny   { background: var(--red-bg);   border-color: var(--red); }
+  .banner.route-escalate    { background: var(--amber-bg); border-color: var(--amber); }
+  .banner.route-retake      { background: var(--grey-bg);  border-color: var(--grey); }
+  .banner .route-name { font-size: 20px; font-weight: 750; text-transform: capitalize; }
+  .banner .payout { font-size: 26px; font-weight: 800; }
+  .banner .b-col { display: flex; flex-direction: column; }
+  .banner .b-label { font-size: 10.5px; text-transform: uppercase; letter-spacing: .04em; opacity: .8; }
+  .banner .why { font-size: 12px; opacity: .85; }
+  .banner .spacer { flex: 1; }
+
+  .teach {
+    font-size: 12.5px; color: var(--muted); font-style: italic;
+    padding: 10px 14px; border-left: 3px solid var(--accent);
+    background: var(--panel-2); border-radius: 0 8px 8px 0; margin-bottom: 16px;
+  }
+
+  /* stage timeline */
+  .stage {
+    border: 1px solid var(--border); border-radius: 10px; margin-bottom: 10px;
+    background: var(--panel); overflow: hidden; opacity: 0; transform: translateY(6px);
+    animation: fadein .35s ease forwards;
+  }
+  @keyframes fadein { to { opacity: 1; transform: none; } }
+  .stage .head {
+    display: flex; align-items: center; gap: 10px; padding: 11px 14px;
+    background: var(--panel-2); border-bottom: 1px solid var(--border);
+  }
+  .stage .num {
+    width: 22px; height: 22px; border-radius: 50%; background: var(--accent);
+    color: #fff; font-size: 12px; font-weight: 700; display: flex;
+    align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .stage .title { font-weight: 650; font-size: 13.5px; }
+  .stage .tag { font-size: 10.5px; color: var(--muted); font-style: italic; }
+  .stage .body { padding: 12px 14px; }
+  .stage.skipped { opacity: .5; }
+
+  .conf-bar { height: 6px; border-radius: 4px; background: var(--panel-2);
+              overflow: hidden; min-width: 60px; flex: 1; max-width: 140px; }
+  .conf-bar > i { display: block; height: 100%; background: var(--accent); }
+  .conf-line { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 620px) { .compare { grid-template-columns: 1fr; } }
+  .compare h4 { margin: 0 0 8px; font-size: 11.5px; text-transform: uppercase;
+                letter-spacing: .03em; color: var(--muted); }
+  .dmg-row { display: flex; align-items: center; gap: 8px; padding: 5px 0;
+             font-size: 12.5px; border-bottom: 1px dashed var(--border); }
+  .dmg-row:last-child { border-bottom: none; }
+  .dmg-row .cat { font-weight: 600; }
+  .dmg-row .sev { color: var(--muted); font-size: 11.5px; }
+
+  .breakdown { font-size: 13px; }
+  .breakdown .row { display: flex; justify-content: space-between; padding: 5px 0;
+                    border-bottom: 1px dashed var(--border); }
+  .breakdown .row.total { font-weight: 700; border-bottom: none; border-top: 2px solid var(--border);
+                          margin-top: 4px; padding-top: 8px; }
+  .breakdown .row .neg { color: var(--red); }
+
+  .reason-pill { display: inline-block; font-size: 11px; background: var(--panel-2);
+                 border: 1px solid var(--border); border-radius: 6px;
+                 padding: 3px 8px; margin: 3px 3px 0 0; font-family: ui-monospace, monospace; }
+
+  .spinner { width: 15px; height: 15px; border: 2px solid var(--border);
+             border-top-color: var(--accent); border-radius: 50%;
+             animation: spin .7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .scope-note { font-size: 11.5px; color: var(--muted); margin-top: 18px;
+                padding-top: 12px; border-top: 1px solid var(--border); }
+  .scope-note b { color: var(--text); }
+  .loading { color: var(--muted); padding: 20px; }
+  .err { color: var(--red); padding: 12px; font-size: 13px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Avahi</h1>
+  <span class="sub">Architecture 2 — Split Pipeline · live demo</span>
+  <span class="spacer"></span>
+  <span class="sub" id="build-note">perception is probabilistic · adjudication is deterministic</span>
+</header>
+
+<div class="layout">
+  <!-- LEFT RAIL -->
+  <aside class="rail">
+    <div class="filters">
+      <input type="text" id="search" placeholder="Search by claim id, name, story…">
+      <div class="filter-row">
+        <select id="f-route">
+          <option value="">All routes</option>
+          <option value="auto_approve">Auto-approve</option>
+          <option value="auto_deny">Auto-deny</option>
+          <option value="escalate">Escalate</option>
+        </select>
+        <select id="f-status">
+          <option value="">All statuses</option>
+          <option value="active">Active</option>
+          <option value="lapsed">Lapsed</option>
+        </select>
+        <select id="f-cov">
+          <option value="">Any coverage</option>
+          <option value="collision">Collision</option>
+          <option value="comprehensive">Comprehensive</option>
+        </select>
+      </div>
+      <div class="count" id="catalog-count">Loading claims…</div>
+    </div>
+    <div class="catalog" id="catalog"></div>
+  </aside>
+
+  <!-- RIGHT WORKSPACE -->
+  <main class="workspace" id="workspace">
+    <div class="empty-state" id="empty">
+      <div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:6px;">Pick a claim to begin</div>
+        Browse the seeded claims on the left. Selecting one loads its policy, story,
+        and DB truth damage. Then run the Arch 2 pipeline to see a live decision.
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+"use strict";
+
+const money = (v) => v == null ? "—" : "$" + Number(v).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+const pct = (v) => v == null ? "—" : Math.round(v * 100) + "%";
+const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const routeLabel = (r) => ({auto_approve:"Auto-approve", auto_deny:"Auto-deny", escalate:"Escalate", retake:"Retake"}[r] || r);
+
+let claims = [];
+let selectedId = null;
+
+async function loadClaims() {
+  try {
+    const res = await fetch("/api/claims");
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    claims = await res.json();
+    renderCatalog();
+  } catch (e) {
+    document.getElementById("catalog-count").textContent = "Failed to load claims: " + e.message;
+  }
+}
+
+function policySummary(c) {
+  const p = c.policy || {};
+  return {
+    name: p.name || p.customer_id || "—",
+    car_class: p.car_class || "—",
+    status: p.policy_status || "—",
+    collision: !!p.collision_active,
+    comprehensive: !!p.comprehensive_active,
+  };
+}
+
+function filtered() {
+  const q = document.getElementById("search").value.trim().toLowerCase();
+  const fr = document.getElementById("f-route").value;
+  const fs = document.getElementById("f-status").value;
+  const fc = document.getElementById("f-cov").value;
+  return claims.filter(c => {
+    const ps = policySummary(c);
+    if (fr && (c.preview_route || c.preview && c.preview.route) !== fr) return false;
+    if (fs && ps.status !== fs) return false;
+    if (fc === "collision" && !ps.collision) return false;
+    if (fc === "comprehensive" && !ps.comprehensive) return false;
+    if (q) {
+      const hay = [c.claim_id, ps.name, c.claim_story, ps.car_class].join(" ").toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+}
+
+function previewRoute(c) {
+  return c.preview_route || (c.preview && c.preview.route) || null;
+}
+
+function renderCatalog() {
+  const list = filtered();
+  const box = document.getElementById("catalog");
+  box.innerHTML = "";
+  document.getElementById("catalog-count").textContent =
+    list.length + " of " + claims.length + " claims";
+
+  for (const c of list) {
+    const ps = policySummary(c);
+    const card = el("div", "claim-card" + (c.claim_id === selectedId ? " selected" : ""));
+    card.onclick = () => selectClaim(c.claim_id);
+
+    const img = el("img", "thumb");
+    img.loading = "lazy";
+    img.src = "/api/image/" + encodeURIComponent(c.photo_file);
+    img.onerror = () => { img.style.visibility = "hidden"; };
+    card.appendChild(img);
+
+    const meta = el("div", "meta");
+    meta.appendChild(el("div", "name", esc(ps.name)));
+    meta.appendChild(el("div", "line", esc(ps.car_class) + " · " + esc(c.claim_id)));
+
+    const chips = el("div", "chips");
+    chips.appendChild(el("span", "badge status-" + ps.status, esc(ps.status)));
+    if (ps.collision) chips.appendChild(el("span", "badge cov", "collision"));
+    if (ps.comprehensive) chips.appendChild(el("span", "badge cov", "comp"));
+    const pr = previewRoute(c);
+    if (pr) chips.appendChild(el("span", "badge route-" + pr, routeLabel(pr)));
+    meta.appendChild(chips);
+
+    if (c.claim_story) meta.appendChild(el("div", "story", esc(c.claim_story)));
+    card.appendChild(meta);
+    box.appendChild(card);
+  }
+}
+
+async function selectClaim(id) {
+  selectedId = id;
+  renderCatalog();
+  const ws = document.getElementById("workspace");
+  ws.innerHTML = '<div class="loading">Loading claim…</div>';
+  try {
+    const res = await fetch("/api/claims/" + encodeURIComponent(id));
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const c = await res.json();
+    renderWorkspace(c);
+  } catch (e) {
+    ws.innerHTML = '<div class="err">Failed to load claim: ' + esc(e.message) + '</div>';
+  }
+}
+
+function damageChips(instances, opts) {
+  opts = opts || {};
+  const box = el("div");
+  if (!instances || !instances.length) { box.appendChild(el("div", "sev", "— none —")); return box; }
+  for (const d of instances) {
+    const row = el("div", "dmg-row");
+    row.appendChild(el("span", "cat", esc(d.damage_category)));
+    const bits = [];
+    if (d.severity) bits.push(d.severity);
+    if (d.operation) bits.push(d.operation);
+    if (d.coverage_type) bits.push(d.coverage_type);
+    row.appendChild(el("span", "sev", esc(bits.join(" · "))));
+    if (opts.confidence && d.confidence != null) {
+      const cl = el("span", "conf-line");
+      const bar = el("span", "conf-bar"); const fill = el("i"); fill.style.width = (d.confidence*100)+"%"; bar.appendChild(fill);
+      cl.appendChild(bar); cl.appendChild(el("span", null, pct(d.confidence)));
+      cl.style.marginLeft = "auto";
+      row.appendChild(cl);
+    }
+    box.appendChild(row);
+  }
+  return box;
+}
+
+function renderWorkspace(c) {
+  const ps = policySummary(c);
+  const p = c.policy || {};
+  const ws = document.getElementById("workspace");
+  ws.innerHTML = "";
+
+  const grid = el("div", "ws-grid");
+
+  // Left column: photo + policy
+  const leftCol = el("div");
+  const photoCard = el("div", "card");
+  photoCard.appendChild(el("h3", null, "Claim photo"));
+  const img = el("img", "photo");
+  img.src = "/api/image/" + encodeURIComponent(c.photo_file);
+  img.alt = c.photo_file;
+  photoCard.appendChild(img);
+  leftCol.appendChild(photoCard);
+
+  const polCard = el("div", "card"); polCard.style.marginTop = "16px";
+  polCard.appendChild(el("h3", null, "Policy"));
+  const kv = (k, v) => { const r = el("div","kv"); r.appendChild(el("span","k",esc(k))); r.appendChild(el("span","v",v)); return r; };
+  polCard.appendChild(kv("Customer", esc(ps.name)));
+  polCard.appendChild(kv("Car class", esc(ps.car_class)));
+  const statusV = '<span class="badge status-'+ps.status+'">'+esc(ps.status)+'</span>';
+  polCard.appendChild(kv("Status", statusV));
+  polCard.appendChild(kv("Collision", ps.collision ? "active · limit "+money(p.collision_limit) : "—"));
+  polCard.appendChild(kv("Comprehensive", ps.comprehensive ? "active · limit "+money(p.comprehensive_limit) : "—"));
+  polCard.appendChild(kv("Deductible", money(p.deductible)));
+  leftCol.appendChild(polCard);
+  grid.appendChild(leftCol);
+
+  // Right column: story, truth damage, run
+  const rightCol = el("div");
+  const storyCard = el("div", "card");
+  storyCard.appendChild(el("h3", null, "Claim story"));
+  storyCard.appendChild(el("div", null, esc(c.claim_story || "—")));
+  rightCol.appendChild(storyCard);
+
+  const truthCard = el("div", "card"); truthCard.style.marginTop = "16px";
+  truthCard.appendChild(el("h3", null, "Truth damage (from DB)"));
+  truthCard.appendChild(damageChips(c.truth_damage || c.damage_instances || []));
+  rightCol.appendChild(truthCard);
+
+  // Deterministic preview
+  const prev = c.preview || (c.preview_route ? {route: c.preview_route, payout: c.preview_payout} : null);
+  if (prev) {
+    const pc = el("div", "card"); pc.style.marginTop = "16px";
+    pc.appendChild(el("h3", null, "Deterministic preview (offline, no VLM)"));
+    const line = el("div"); line.style.display = "flex"; line.style.gap = "10px"; line.style.alignItems = "center";
+    line.innerHTML = '<span class="badge route-'+prev.route+'">'+routeLabel(prev.route)+'</span>'
+      + '<span style="font-weight:700;">'+money(prev.payout)+'</span>'
+      + '<span class="sev" style="color:var(--muted)">computed at confidence 1.0</span>';
+    pc.appendChild(line);
+    rightCol.appendChild(pc);
+  }
+
+  const runWrap = el("div", "card"); runWrap.style.marginTop = "16px";
+  const btn = el("button", "run-btn", "▶ Run Arch 2 pipeline (live)");
+  btn.onclick = () => runPipeline(c.claim_id, btn);
+  runWrap.appendChild(btn);
+  runWrap.appendChild(el("div", "run-note", "Makes 3 live VLM calls (gatekeeper · segmenter · damage assessor)"));
+  rightCol.appendChild(runWrap);
+
+  const results = el("div"); results.id = "results"; results.style.marginTop = "16px";
+  rightCol.appendChild(results);
+
+  grid.appendChild(rightCol);
+  ws.appendChild(grid);
+
+  const scope = el("div", "scope-note");
+  scope.innerHTML = "<b>Out of scope (not faked):</b> no arbitrary photo upload (Option A — payout needs a "
+    + "claim_id + policy); no live &ldquo;retake&rdquo; demo (no junk images curated yet); "
+    + "no Arch 1 / Arch 3 comparison (not built).";
+  ws.appendChild(scope);
+}
+
+async function runPipeline(id, btn) {
+  btn.disabled = true;
+  btn.innerHTML = '<span style="display:inline-flex;gap:8px;align-items:center;justify-content:center;"><span class="spinner"></span> Running…</span>';
+  const results = document.getElementById("results");
+  results.innerHTML = "";
+  try {
+    const res = await fetch("/api/claims/" + encodeURIComponent(id) + "/run", { method: "POST" });
+    if (!res.ok) {
+      let msg = "HTTP " + res.status;
+      try { const j = await res.json(); if (j.detail) msg = j.detail; } catch(_) {}
+      throw new Error(msg);
+    }
+    const r = await res.json();
+    renderResult(r, results, id);
+  } catch (e) {
+    results.innerHTML = '<div class="err">Pipeline failed: ' + esc(e.message) + '</div>';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "▶ Run Arch 2 pipeline (live)";
+  }
+}
+
+function stageEl(num, title, tag, skipped) {
+  const s = el("div", "stage" + (skipped ? " skipped" : ""));
+  s.style.animationDelay = (num * 0.12) + "s";
+  const head = el("div", "head");
+  head.appendChild(el("span", "num", String(num)));
+  head.appendChild(el("span", "title", esc(title)));
+  if (tag) { const t = el("span", "tag"); t.textContent = tag; head.appendChild(t); }
+  s.appendChild(head);
+  const body = el("div", "body");
+  s.appendChild(body);
+  return { root: s, body };
+}
+
+function confLine(label, v) {
+  const cl = el("div", "conf-line");
+  if (label) cl.appendChild(el("span", null, esc(label)));
+  const bar = el("span", "conf-bar"); const fill = el("i"); fill.style.width = ((v||0)*100)+"%"; bar.appendChild(fill);
+  cl.appendChild(bar);
+  cl.appendChild(el("span", null, pct(v)));
+  return cl;
+}
+
+function renderResult(r, box, claimId) {
+  const truthClaim = claims.find(c => c.claim_id === claimId);
+
+  // Banner
+  const banner = el("div", "banner route-" + r.route);
+  const rc = el("div", "b-col");
+  rc.appendChild(el("span", "b-label", "Route"));
+  rc.appendChild(el("span", "route-name", routeLabel(r.route)));
+  banner.appendChild(rc);
+  const pc = el("div", "b-col");
+  pc.appendChild(el("span", "b-label", "Payout"));
+  pc.appendChild(el("span", "payout", money(r.payout)));
+  banner.appendChild(pc);
+  const cc = el("div", "b-col");
+  cc.appendChild(el("span", "b-label", "Gating confidence"));
+  cc.appendChild(el("span", "route-name", pct(r.confidence)));
+  cc.querySelector(".route-name").style.fontSize = "20px";
+  banner.appendChild(cc);
+  banner.appendChild(el("div", "spacer"));
+  if (r.reasons && r.reasons.length) {
+    const w = el("div", "b-col");
+    w.appendChild(el("span", "b-label", "Why"));
+    w.appendChild(el("span", "why", esc(r.reasons.join(", "))));
+    banner.appendChild(w);
+  }
+  box.appendChild(banner);
+
+  box.appendChild(el("div", "teach",
+    "&ldquo;The model read the damage. The code computed the dollars. No model emitted this number.&rdquo;"));
+
+  const gate = r.gatekeeper || {};
+  const s1 = stageEl(1, "Gatekeeper", "is the photo usable?");
+  s1.body.appendChild(el("div", null, (gate.valid ? "✓ valid" : "✗ invalid") + " — " + esc(gate.reason || "")));
+  s1.body.appendChild(confLine("confidence", gate.confidence));
+  box.appendChild(s1.root);
+
+  if (r.route === "retake") {
+    const s = stageEl(2, "Pipeline stopped", "photo rejected — route: retake", true);
+    s.body.appendChild(el("div", "sev", "Segmenter, damage assessor and rules engine were not run."));
+    box.appendChild(s.root);
+    return;
+  }
+
+  // Stage 2 — segmenter
+  const s2 = stageEl(2, "Segmenter", "observability-only · not used for money");
+  const panels = r.panels || [];
+  if (panels.length) {
+    const chips = el("div", "chips");
+    for (const p of panels) chips.appendChild(el("span", "badge dmg", esc(p.panel) + " · " + pct(p.confidence)));
+    s2.body.appendChild(chips);
+  } else s2.body.appendChild(el("div", "sev", "no panels reported"));
+  box.appendChild(s2.root);
+
+  // Stage 3 — damage assessor: predicted vs truth
+  const s3 = stageEl(3, "Damage assessor", "perception — this is what can be wrong");
+  const cmp = el("div", "compare");
+  const predCol = el("div"); predCol.appendChild(el("h4", null, "Predicted (VLM)"));
+  predCol.appendChild(damageChips(r.damage || [], { confidence: true }));
+  cmp.appendChild(predCol);
+  const truthCol = el("div"); truthCol.appendChild(el("h4", null, "Truth (DB)"));
+  truthCol.appendChild(damageChips(truthClaim ? (truthClaim.truth_damage || truthClaim.damage_instances || []) : []));
+  cmp.appendChild(truthCol);
+  s3.body.appendChild(cmp);
+  box.appendChild(s3.root);
+
+  if (!r.damage || !r.damage.length) {
+    const s = stageEl(4, "Rules engine", "not reached — no damage detected", true);
+    s.body.appendChild(el("div", "sev", "Vision saw no assessable damage while the claim asserts it — escalated to a human."));
+    box.appendChild(s.root);
+    return;
+  }
+
+  // Stage 4 — rules engine
+  const s4 = stageEl(4, "Rules engine", "pure code — no model touched this number");
+  const pr = r.payout_result || {};
+  const bd = el("div", "breakdown");
+  const row = (k, v, neg) => {
+    const rr = el("div", "row");
+    rr.appendChild(el("span", null, esc(k)));
+    rr.appendChild(el("span", neg ? "neg" : null, v));
+    return rr;
+  };
+  if (pr.total_cost != null) bd.appendChild(row("Total repair cost", money(pr.total_cost)));
+  if (pr.covered_cost != null) bd.appendChild(row("Covered cost (after limit caps)", money(pr.covered_cost)));
+  if (r.deductible_applied != null) bd.appendChild(row("Deductible", "− " + money(r.deductible_applied), true));
+  bd.appendChild(row("Payout", money(r.payout)));
+  const tot = el("div", "row total");
+  tot.appendChild(el("span", null, "Escalation gate"));
+  tot.appendChild(el("span", null, "≤ $2,000 &amp; conf ≥ 75%"));
+  bd.appendChild(tot);
+  s4.body.appendChild(bd);
+  if (r.reasons && r.reasons.length) {
+    const rp = el("div"); rp.style.marginTop = "8px";
+    for (const reason of r.reasons) rp.appendChild(el("span", "reason-pill", esc(reason)));
+    s4.body.appendChild(rp);
+  }
+  box.appendChild(s4.root);
+}
+
+// wire filters
+for (const el0 of ["search", "f-route", "f-status", "f-cov"]) {
+  document.getElementById(el0).addEventListener("input", renderCatalog);
+}
+loadClaims();
+</script>
+</body>
+</html>

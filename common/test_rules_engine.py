@@ -128,6 +128,16 @@ class RulesEngineTestCase(unittest.TestCase):
         result = rules_engine.compute_payout(self.conn, "c7", confidence=0.9)
         self.assertAlmostEqual(result.payout, 100 + 500)  # collision capped $100 + comprehensive uncapped $500
 
+    def test_deductible_exceeds_limit_escalates_as_data_integrity(self):
+        # limit $100, deductible $1000 -> no loss ever recovers a dollar; this
+        # is a malformed policy, not a $0 auto-approve.
+        customer_id = self._add_policy(collision_limit=100, deductible=1000)
+        self._add_claim("c9", customer_id, [("scratch", "minor", "collision")])  # $150 cost
+        result = rules_engine.compute_payout(self.conn, "c9", confidence=0.99)
+        self.assertEqual(result.route, "escalate")
+        self.assertIsNone(result.payout)
+        self.assertIn("policy_deductible_exceeds_limit", result.reasons)
+
     def test_partial_coverage_excludes_uncovered_instance(self):
         customer_id = self._add_policy(collision_active=0, deductible=0)
         self._add_claim("c8", customer_id, [

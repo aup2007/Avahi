@@ -1,0 +1,140 @@
+[
+  {
+    "claim_id": "CLM-90001",
+    "customer_id": "demo-cust13",
+    "photo_file": "001372.jpg",
+    "claim_story": "Head-on collision totaled the entire front of the car -- hood, both fenders, and the bumper all need full replacement.",
+    "mismatch_type": "story_inflates_severity",
+    "true_damage": [
+      {
+        "damage_category": "dent",
+        "severity": "minor",
+        "coverage_type": "collision"
+      }
+    ],
+    "route": "escalate",
+    "payout": null,
+    "deductible_applied": null,
+    "total_cost": 142.5,
+    "covered_cost": 142.5,
+    "reasons": [
+      "story_damage_inconsistent"
+    ]
+  },
+  {
+    "claim_id": "CLM-90002",
+    "customer_id": "demo-cust19",
+    "photo_file": "000012.jpg",
+    "claim_story": "A rock kicked up on the highway cracked and completely shattered my windshield.",
+    "mismatch_type": "fabricated_damage_type",
+    "true_damage": [
+      {
+        "damage_category": "tire flat",
+        "severity": "moderate",
+        "coverage_type": "collision"
+      },
+      {
+        "damage_category": "tire flat",
+        "severity": "moderate",
+        "coverage_type": "collision"
+      }
+    ],
+    "route": "escalate",
+    "payout": null,
+    "deductible_applied": null,
+    "total_cost": 395.0,
+    "covered_cost": 395.0,
+    "reasons": [
+      "story_damage_inconsistent"
+    ]
+  },
+  {
+    "claim_id": "CLM-90003",
+    "customer_id": "demo-cust7",
+    "photo_file": "000042.jpg",
+    "claim_story": "Minor shopping-cart ding on the rear door, nothing else.",
+    "mismatch_type": "story_understates_severity",
+    "true_damage": [
+      {
+        "damage_category": "dent",
+        "severity": "minor",
+        "coverage_type": "collision"
+      },
+      {
+        "damage_category": "dent",
+        "severity": "minor",
+        "coverage_type": "collision"
+      },
+      {
+        "damage_category": "scratch",
+        "severity": "minor",
+        "coverage_type": "collision"
+      },
+      {
+        "damage_category": "scratch",
+        "severity": "minor",
+        "coverage_type": "collision"
+      },
+      {
+        "damage_category": "crack",
+        "severity": "moderate",
+        "coverage_type": "collision"
+      },
+      {
+        "damage_category": "crack",
+        "severity": "moderate",
+        "coverage_type": "collision"
+      },
+      {
+        "damage_category": "glass shatter",
+        "severity": "severe",
+        "coverage_type": "collision"
+      },
+      {
+        "damage_category": "lamp broken",
+        "severity": "severe",
+        "coverage_type": "collision"
+      }
+    ],
+    "route": "escalate",
+    "payout": null,
+    "deductible_applied": null,
+    "total_cost": 5760.0,
+    "covered_cost": 5760.0,
+    "reasons": [
+      "story_damage_inconsistent"
+    ]
+  },
+  {
+    "claim_id": "CLM-90004",
+    "customer_id": "demo-cust1",
+    "photo_file": "000570.jpg",
+    "claim_story": "Rear-ended at a stoplight by another vehicle that failed to brake.",
+    "mismatch_type": "peril_mismatch_collision_vs_comprehensive",
+    "true_damage": [
+      {
+        "damage_category": "dent",
+        "severity": "minor",
+        "coverage_type": "comprehensive"
+      },
+      {
+        "damage_category": "dent",
+        "severity": "minor",
+        "coverage_type": "comprehensive"
+      },
+      {
+        "damage_category": "crack",
+        "severity": "moderate",
+        "coverage_type": "comprehensive"
+      }
+    ],
+    "route": "escalate",
+    "payout": null,
+    "deductible_applied": null,
+    "total_cost": 1360.0,
+    "covered_cost": 1360.0,
+    "reasons": [
+      "story_damage_inconsistent"
+    ]
+  }
+]

@@ -73,12 +73,29 @@ def compute_payout(
             total_cost=costs["total_cost"], covered_cost=0.0, reasons=["not_covered"],
         )
 
-    # Deductible applied once at the policy level, not per-instance (SPEC.md §4).
-    payout = max(covered_cost - policy["deductible"], 0.0)
-
     reasons = []
     if uncovered_present:
         reasons.append("partial_coverage_some_instances_excluded")
+
+    # Data-integrity guard: if the deductible meets or exceeds the total limit
+    # available to this claim, recovery is structurally impossible -- no loss of
+    # any size pays a dollar, the deductible swallows the whole limit. That is a
+    # malformed policy (data-entry error / bad endorsement), not a $0 claim
+    # outcome, so flag it for a human instead of silently auto-approving $0.
+    applicable_limit = 0.0
+    if costs["collision_cost"] > 0 and covered_collision:
+        applicable_limit += policy["collision_limit"]
+    if costs["comprehensive_cost"] > 0 and covered_comprehensive:
+        applicable_limit += policy["comprehensive_limit"]
+    if policy["deductible"] >= applicable_limit:
+        return PayoutResult(
+            route="escalate", payout=None, deductible_applied=None,
+            total_cost=costs["total_cost"], covered_cost=covered_cost,
+            reasons=reasons + ["policy_deductible_exceeds_limit"],
+        )
+
+    # Deductible applied once at the policy level, not per-instance (SPEC.md §4).
+    payout = max(covered_cost - policy["deductible"], 0.0)
 
     if payout <= auto_approve_max and confidence >= confidence_threshold:
         route = "auto_approve"
