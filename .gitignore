@@ -13,6 +13,11 @@ uploads/
 claimLangsmith.json
 eval/run_arch2.stdout
 
+# Kept local, not on GitHub
+astonmartin.jpg
+claims-architecture-fde.pptx
+DEPLOY_PLAN.md
+
 # Docs / internal files kept local
 Plan.md
 SPEC.md
