@@ -70,7 +70,7 @@ def _run_once(conn, records, sleep: float, judge: bool) -> list[dict]:
     rows = []
     for rec in records:
         image_path = str(IMAGE_DIR / rec["photo_file"])
-        result = vlm_call.decide(conn, rec["claim_id"], image_path, rec.get("claim_story"))
+        result = vlm_call.decide(conn, rec["claim_id"], image_path)
         policy = vlm_call._fetch_policy(conn, rec["customer_id"])
 
         hallucinated, why = _is_hallucinated(result.payout, policy)

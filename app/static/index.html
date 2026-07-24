@@ -6,29 +6,19 @@
 <title>Avahi — Arch 2 Live Demo</title>
 <style>
   :root {
-    --bg: #f6f7f9;
+    color-scheme: light;
+    --bg: #f8fafc;
     --panel: #ffffff;
-    --panel-2: #f0f2f5;
-    --border: #dfe3e8;
-    --text: #1a1d21;
-    --muted: #6b7280;
-    --accent: #2563eb;
-    --green: #16a34a;  --green-bg: #dcfce7;
+    --panel-2: #f1f5f9;
+    --border: #e2e8f0;
+    --text: #0f172a;
+    --muted: #64748b;
+    --accent: #4f46e5;
+    --green: #059669;  --green-bg: #d1fae5;
     --amber: #d97706;  --amber-bg: #fef3c7;
     --red: #dc2626;    --red-bg: #fee2e2;
-    --grey: #6b7280;   --grey-bg: #e5e7eb;
-    --shadow: 0 1px 2px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.1);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #0f1115; --panel: #181b20; --panel-2: #1f242b; --border: #2b313a;
-      --text: #e8eaed; --muted: #9aa2ad; --accent: #3b82f6;
-      --green: #4ade80; --green-bg: #14311f;
-      --amber: #fbbf24; --amber-bg: #3a2c07;
-      --red: #f87171;   --red-bg: #3a1414;
-      --grey: #9aa2ad;  --grey-bg: #2b313a;
-      --shadow: 0 1px 2px rgba(0,0,0,.4);
-    }
+    --grey: #64748b;   --grey-bg: #e2e8f0;
+    --shadow: 0 1px 2px rgba(15,23,42,.04), 0 4px 12px rgba(15,23,42,.06);
   }
   * { box-sizing: border-box; }
   body {
@@ -274,12 +264,9 @@
     </div>
 
     <button class="run-btn" id="run" disabled>▶ Run Arch 2 pipeline (live)</button>
-    <div class="run-note" id="run-note">Makes 3 live VLM calls (gatekeeper · segmenter · damage assessor)</div>
+    <div class="run-note hidden" id="run-note"></div>
 
-    <div class="scope-note" id="scope-note">
-      <b>Out of scope (not faked):</b> no incident-story input — that's an Arch 3 feature; Arch 2 is story-blind.
-      No Arch 1 comparison (not built).
-    </div>
+    <div class="scope-note hidden" id="scope-note"></div>
   </div>
 
   <!-- RESULTS -->
@@ -310,9 +297,8 @@ const ARCH_UI = {
   "2": {
     headerSub: "Architecture 2 — Split Pipeline · live demo",
     runLabel: "▶ Run Arch 2 pipeline (live)",
-    runNote: "Makes 3 live VLM calls (gatekeeper · segmenter · damage assessor)",
-    scope: "<b>Out of scope (not faked):</b> no incident-story input — that's an Arch 3 feature; " +
-           "Arch 2 is story-blind.",
+    runNote: "",
+    scope: "",
   },
   "3": {
     headerSub: "Architecture 3 — PEV Agent · live demo",
@@ -329,9 +315,13 @@ function setArch(next) {
   for (const b of document.querySelectorAll("#arch-seg button")) b.classList.toggle("on", b.dataset.arch === next);
   document.getElementById("header-sub").textContent = ui.headerSub;
   document.getElementById("run").textContent = ui.runLabel;
-  document.getElementById("run-note").textContent = ui.runNote;
-  document.getElementById("scope-note").innerHTML = ui.scope;
-  document.getElementById("story-wrap").classList.toggle("hidden", next === "2");
+  const runNote = document.getElementById("run-note");
+  runNote.textContent = ui.runNote || "";
+  runNote.classList.toggle("hidden", !ui.runNote);
+  const scopeNote = document.getElementById("scope-note");
+  scopeNote.innerHTML = ui.scope || "";
+  scopeNote.classList.toggle("hidden", !ui.scope);
+  document.getElementById("story-wrap").classList.toggle("hidden", next !== "3");
   document.getElementById("results").innerHTML = "";
 }
 
@@ -449,8 +439,8 @@ async function runUpload() {
     fd.append("customer_id", cid);
     fd.append("photo", selectedFile);
     fd.append("arch", arch);
-    // Arch 1 and Arch 3 read the story; Arch 2 is story-blind.
-    if (arch !== "2") fd.append("claim_story", document.getElementById("story").value);
+    // Only Arch 3 reads the story; Arch 1 and Arch 2 are story-blind.
+    if (arch === "3") fd.append("claim_story", document.getElementById("story").value);
     const res = await fetch("/api/upload", { method: "POST", body: fd });
     if (!res.ok) {
       let msg = "HTTP " + res.status;

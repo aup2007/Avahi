@@ -115,14 +115,14 @@ async def upload(
         _require_customer(conn, customer_id)
         dest = _save_photo(photo)
 
-        # Arch 2 is story-blind by design, so its story field is dropped here
-        # rather than silently ignored downstream. Arch 1 and Arch 3 read it.
+        # Only Arch 3 reads the story (peril + story-vs-evidence verification).
+        # Arch 1 and Arch 2 are story-blind by design, so the field is dropped here.
         story = claim_story.strip() or None
         try:
             if arch == "3":
                 result = arch3_intake.run_upload(conn, customer_id, str(dest), story)
             elif arch == "1":
-                result = vlm_call.decide_upload(conn, customer_id, str(dest), story)
+                result = vlm_call.decide_upload(conn, customer_id, str(dest))
             else:
                 result = pipeline.run_upload(conn, customer_id, str(dest))
         except HTTPException:

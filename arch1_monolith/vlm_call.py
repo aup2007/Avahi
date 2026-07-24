@@ -42,7 +42,7 @@ def _encode_image(image_path: str) -> str:
 
 SYSTEM_PROMPT = (
     "You are an automated car-insurance claims adjuster. You are given one photo of a "
-    "damaged vehicle, the customer's policy, and the story submitted with the claim. "
+    "damaged vehicle and the customer's policy. "
     "Decide the claim end to end: read the damage off the photo, estimate what the repair "
     "costs, judge whether the policy covers it, and state the exact dollar amount owed.\n"
     "Contract rules: the payout is capped at the limit of the applicable coverage, the "
@@ -173,10 +173,9 @@ def _call(image_path: str, user_prompt: str, model: str) -> dict:
     raise RuntimeError(f"monolith call failed after {MAX_ATTEMPTS} attempts: {last_err}")
 
 
-def _build_prompt(policy: dict, story: str) -> str:
+def _build_prompt(policy: dict) -> str:
     return (
         f"POLICY\n{_policy_text(policy)}\n\n"
-        f"CLAIM STORY\n{story}\n\n"
         "The photo of the damage is attached. Decide the claim."
     )
 
@@ -200,10 +199,12 @@ def decide(
     conn: sqlite3.Connection,
     claim_id: str,
     image_path: str,
-    claim_story: str | None = None,
     *,
     model: str = VISION_MODEL,
 ) -> MonolithResult:
+    # Story-blind by design: Arch 1 is the fully LLM-dependent baseline that decides
+    # from photo + policy only. The claim story is an Arch 3 concern (peril +
+    # story-vs-evidence verification), so the monolith never sees it (SPEC.md §3).
     claim = _fetch_claim(conn, claim_id)
     if claim is None:
         raise ValueError(f"unknown claim_id: {claim_id}")
@@ -211,9 +212,8 @@ def decide(
     if policy is None:
         raise ValueError(f"no policy for customer: {claim['customer_id']}")
 
-    story = claim_story if claim_story is not None else (claim["claim_story"] or "(no story provided)")
     started = time.monotonic()
-    raw = _call(image_path, _build_prompt(policy, story), model)
+    raw = _call(image_path, _build_prompt(policy), model)
     return _result(claim_id, image_path, raw, time.monotonic() - started)
 
 
@@ -221,17 +221,17 @@ def decide_upload(
     conn: sqlite3.Connection,
     customer_id: str,
     image_path: str,
-    claim_story: str | None = None,
     *,
     model: str = VISION_MODEL,
 ) -> MonolithResult:
     # Live-upload entry point mirroring arch2_split.pipeline.run_upload, so the app
     # can drive all three architectures. No claim or damage rows are written: the
     # monolith holds no intermediate state, which is the observability point.
+    # Story-blind like decide(): photo + policy only.
     policy = _fetch_policy(conn, customer_id)
     if policy is None:
         raise ValueError(f"no policy for customer: {customer_id}")
 
     started = time.monotonic()
-    raw = _call(image_path, _build_prompt(policy, claim_story or "(no story provided)"), model)
+    raw = _call(image_path, _build_prompt(policy), model)
     return _result("live-" + uuid.uuid4().hex[:12], image_path, raw, time.monotonic() - started)
