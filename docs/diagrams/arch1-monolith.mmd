@@ -1,0 +1,19 @@
+flowchart TD
+    upload[photo + policy + story] --> vlm[single VLM call<br/>reads damage · estimates cost<br/>judges coverage · states payout]
+
+    vlm -.->|no intermediate state| log[no audit trail]
+
+    vlm -->|covered| approve[route: auto_approve<br/>model-emitted payout]
+    vlm -->|not covered| deny[route: auto_deny]
+
+    classDef io fill:#dbeafe,stroke:#3b82f6,color:#1e3a5f
+    classDef model fill:#fdebd0,stroke:#d97706,color:#5b3a0a
+    classDef reject fill:#fde8e8,stroke:#dc2626,color:#7f1d1d
+    classDef final fill:#dcfce7,stroke:#16a34a,color:#14532d
+    classDef ghost fill:#eef1f4,stroke:#9aa4af,color:#6b7885,stroke-dasharray:4 3
+
+    class upload io
+    class vlm model
+    class approve final
+    class deny reject
+    class log ghost
