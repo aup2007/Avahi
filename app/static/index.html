@@ -237,6 +237,9 @@
 
     <label class="field">Architecture</label>
     <div class="seg" id="arch-seg">
+      <button type="button" data-arch="1">
+        <b>Arch 1 — Monolith</b><span>one VLM call · model emits the payout</span>
+      </button>
       <button type="button" data-arch="2" class="on">
         <b>Arch 2 — Split pipeline</b><span>fixed 3-stage sequence · story-blind</span>
       </button>
@@ -297,19 +300,26 @@ let selectedFile = null;
 let arch = "2";
 
 const ARCH_UI = {
+  "1": {
+    headerSub: "Architecture 1 — Monolith · live demo",
+    runLabel: "▶ Run Arch 1 monolith (live)",
+    runNote: "One VLM call decides everything — the model emits the dollar figure directly",
+    scope: "<b>The baseline the comparison argues against:</b> no cost table, no rules engine, " +
+           "no escalate branch, no intermediate state. The payout is model-emitted, not computed.",
+  },
   "2": {
     headerSub: "Architecture 2 — Split Pipeline · live demo",
     runLabel: "▶ Run Arch 2 pipeline (live)",
     runNote: "Makes 3 live VLM calls (gatekeeper · segmenter · damage assessor)",
     scope: "<b>Out of scope (not faked):</b> no incident-story input — that's an Arch 3 feature; " +
-           "Arch 2 is story-blind. No Arch 1 comparison (not built).",
+           "Arch 2 is story-blind.",
   },
   "3": {
     headerSub: "Architecture 3 — PEV Agent · live demo",
     runLabel: "▶ Run Arch 3 agent (live)",
     runNote: "Adaptive: up to 8 tool calls and 2 replans — the trace below shows what it actually chose",
-    scope: "<b>Out of scope (not faked):</b> no Arch 1 comparison (not built). " +
-           "The agent has no payout tool — the dollar figure comes from the same rules engine Arch 2 uses.",
+    scope: "<b>Out of scope (not faked):</b> the agent has no payout tool — " +
+           "the dollar figure comes from the same rules engine Arch 2 uses.",
   },
 };
 
@@ -321,7 +331,7 @@ function setArch(next) {
   document.getElementById("run").textContent = ui.runLabel;
   document.getElementById("run-note").textContent = ui.runNote;
   document.getElementById("scope-note").innerHTML = ui.scope;
-  document.getElementById("story-wrap").classList.toggle("hidden", next !== "3");
+  document.getElementById("story-wrap").classList.toggle("hidden", next === "2");
   document.getElementById("results").innerHTML = "";
 }
 
@@ -439,7 +449,8 @@ async function runUpload() {
     fd.append("customer_id", cid);
     fd.append("photo", selectedFile);
     fd.append("arch", arch);
-    if (arch === "3") fd.append("claim_story", document.getElementById("story").value);
+    // Arch 1 and Arch 3 read the story; Arch 2 is story-blind.
+    if (arch !== "2") fd.append("claim_story", document.getElementById("story").value);
     const res = await fetch("/api/upload", { method: "POST", body: fd });
     if (!res.ok) {
       let msg = "HTTP " + res.status;
@@ -448,6 +459,7 @@ async function runUpload() {
     }
     const body = await res.json();
     if (body.arch === "3") renderArch3(body.result, results);
+    else if (body.arch === "1") renderArch1(body.result, results);
     else renderResult(body.result, results);
   } catch (e) {
     results.innerHTML = '<div class="err">Run failed: ' + esc(e.message) + '</div>';
@@ -517,6 +529,39 @@ function verdictBanner(r, box) {
   if (r.claim_id) add("New claim", esc(r.claim_id), "why");
   if (r.reasons && r.reasons.length) add("Why", esc(r.reasons.join(", ")), "why");
   box.appendChild(banner);
+}
+
+function renderArch1(r, box) {
+  const banner = el("div", "banner route-" + r.route);
+  const add = (label, valueHtml, cls) => {
+    const c = el("div", "b-col");
+    c.appendChild(el("span", "b-label", label));
+    c.appendChild(el("span", cls || "route-name", valueHtml));
+    banner.appendChild(c);
+  };
+  add("Route", routeLabel(r.route));
+  add("Payout", money(r.payout), "payout");
+  add("Coverage", esc(r.coverage_type || "—"));
+  banner.appendChild(el("div", "spacer"));
+  add("Source", "model-emitted", "why");
+  box.appendChild(banner);
+
+  box.appendChild(el("div", "teach",
+    "&ldquo;One VLM call read the damage, judged coverage, and emitted this dollar figure directly. " +
+    "No cost table, no rules engine — nothing verified the number.&rdquo;"));
+
+  const s = stageEl(1, "Single VLM call", "reads damage · prices · judges · states payout");
+  s.body.appendChild(el("div", null,
+    (r.covered ? "✓ covered" : "✗ not covered") + (r.coverage_type ? " — " + esc(r.coverage_type) : "")));
+  if (r.reasoning) s.body.appendChild(el("div", "sev", esc(r.reasoning)));
+  if (r.latency_s != null) s.body.appendChild(el("div", "sev", "latency " + r.latency_s + "s"));
+  box.appendChild(s.root);
+
+  const note = stageEl(2, "No further stages", "no escalate branch · no audit trail", true);
+  note.body.appendChild(el("div", "sev",
+    "Arch 1 has no rules engine, confidence gate, or escalate route — every claim is force-decided " +
+    "and the result is not written to the review queue."));
+  box.appendChild(note.root);
 }
 
 function renderResult(r, box) {

@@ -12,6 +12,7 @@ from fastapi.staticfiles import StaticFiles
 
 load_dotenv()  # read GROQ_API_KEY / VISION_MODEL from .env into the environment
 
+from arch1_monolith import vlm_call
 from arch2_split import pipeline
 from arch3_agent import intake as arch3_intake
 
@@ -24,7 +25,7 @@ if not DB_PATH.exists():
 UPLOADS_DIR = ROOT / "uploads"
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 
-app = FastAPI(title="Avahi — Live Demo (Arch 2 · Arch 3)")
+app = FastAPI(title="Avahi — Live Demo (Arch 1 · Arch 2 · Arch 3)")
 
 
 @app.on_event("startup")
@@ -106,8 +107,8 @@ async def upload(
     arch: str = Form("2"),
     claim_story: str = Form(""),
 ):
-    if arch not in ("2", "3"):
-        raise HTTPException(status_code=400, detail=f"unknown arch {arch!r}, expected '2' or '3'")
+    if arch not in ("1", "2", "3"):
+        raise HTTPException(status_code=400, detail=f"unknown arch {arch!r}, expected '1', '2' or '3'")
 
     conn = _conn()
     try:
@@ -115,11 +116,13 @@ async def upload(
         dest = _save_photo(photo)
 
         # Arch 2 is story-blind by design, so its story field is dropped here
-        # rather than silently ignored downstream.
+        # rather than silently ignored downstream. Arch 1 and Arch 3 read it.
         story = claim_story.strip() or None
         try:
             if arch == "3":
                 result = arch3_intake.run_upload(conn, customer_id, str(dest), story)
+            elif arch == "1":
+                result = vlm_call.decide_upload(conn, customer_id, str(dest), story)
             else:
                 result = pipeline.run_upload(conn, customer_id, str(dest))
         except HTTPException:
@@ -128,7 +131,11 @@ async def upload(
             raise HTTPException(status_code=502, detail=f"pipeline error: {e}")
 
         payload = _serialize(result)
-        store.record(conn, arch, payload)
+        # Arch 1 writes no claim row (the monolith holds no intermediate state) and
+        # the adjudications store only accepts '2'/'3', so it is not recorded --
+        # matching Arch 1's "no audit trail" property, not an oversight.
+        if arch != "1":
+            store.record(conn, arch, payload)
         return {"arch": arch, "result": payload}
     finally:
         conn.close()
