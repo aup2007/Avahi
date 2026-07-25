@@ -70,7 +70,9 @@ def evaluate(golden_path: Path, sleep: float, limit: int | None = None) -> dict:
     try:
         for rec in records:
             image_path = str(IMAGE_DIR / rec["photo_file"])
+            t0 = time.monotonic()
             result = agent.run_claim(conn, rec["claim_id"], image_path, rec.get("claim_story"))
+            latency_s = time.monotonic() - t0
             route_ok = result.route == rec["route"]
             payout_ok = _payout_matches(result.payout, rec["payout"])
             rows.append({
@@ -86,6 +88,7 @@ def evaluate(golden_path: Path, sleep: float, limit: int | None = None) -> dict:
                 "tool_calls": result.tool_calls,
                 "replans": result.replans,
                 "pred_reasons": result.reasons,
+                "latency_s": round(latency_s, 2),
                 "trajectory": [f"{t['node']}: {t['summary']}" for t in result.trajectory],
             })
             if sleep:

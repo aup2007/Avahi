@@ -39,16 +39,20 @@ def _payout_matches(pred, truth) -> bool:
     return abs(pred - truth) <= PAYOUT_TOL
 
 
-def evaluate(golden_path: Path, sleep: float) -> dict:
+def evaluate(golden_path: Path, sleep: float, limit: int | None = None) -> dict:
     payload = json.loads(golden_path.read_text())
     records = payload["records"]
+    if limit:
+        records = records[:limit]
     conn = sqlite3.connect(DB_PATH)
 
     rows = []
     try:
         for rec in records:
             image_path = str(IMAGE_DIR / rec["photo_file"])
+            t0 = time.monotonic()
             result = pipeline.run_claim(conn, rec["claim_id"], image_path)
+            latency_s = time.monotonic() - t0
             route_ok = result.route == rec["route"]
             payout_ok = _payout_matches(result.payout, rec["payout"])
             rows.append({
@@ -62,6 +66,7 @@ def evaluate(golden_path: Path, sleep: float) -> dict:
                 "payout_ok": payout_ok,
                 "confidence": round(result.confidence, 3),
                 "pred_reasons": result.reasons,
+                "latency_s": round(latency_s, 2),
             })
             if sleep:
                 time.sleep(sleep)
@@ -95,9 +100,10 @@ def main() -> None:
     parser.add_argument("--sleep", type=float, default=8.0,
                         help="seconds between claims to stay under the Groq TPM cap")
     parser.add_argument("--out", default=str(REPO / "eval" / "arch2_results.json"))
+    parser.add_argument("--limit", type=int, default=None, help="only run the first N golden records")
     args = parser.parse_args()
 
-    report = evaluate(Path(args.golden), args.sleep)
+    report = evaluate(Path(args.golden), args.sleep, args.limit)
     Path(args.out).write_text(json.dumps(report, indent=2))
 
     print(f"\nArch 2 vs golden {report['golden_version']}  (n={report['n']})")
