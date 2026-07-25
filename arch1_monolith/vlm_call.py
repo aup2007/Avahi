@@ -139,6 +139,18 @@ def _coerce_payout(value) -> float | None:
         return None
 
 
+def _parse_json_text(text: str) -> dict:
+    # Salvage the JSON object from a raw completion: the reasoning model prefixes
+    # an inline <think> block and may fence the JSON in ```json ... ```.
+    if "</think>" in text:
+        text = text.rsplit("</think>", 1)[-1]
+    start = text.find("{")
+    end = text.rfind("}")
+    if start == -1 or end <= start:
+        raise ValueError("no JSON object in completion")
+    return json.loads(text[start : end + 1])
+
+
 def _call(image_path: str, user_prompt: str, model: str) -> dict:
     client = _get_client()
     messages = [
@@ -153,18 +165,28 @@ def _call(image_path: str, user_prompt: str, model: str) -> dict:
     ]
     last_err: Exception | None = None
     for attempt in range(MAX_ATTEMPTS):
+        # At temperature 0 the model's <think> overrun is deterministic per prompt,
+        # so retrying strict JSON mode forever can never succeed. First attempt uses
+        # JSON mode; after a json_validate_failed, drop it and salvage-parse the
+        # object out of the raw text instead.
+        json_mode = attempt == 0
         try:
+            kwargs = {"response_format": {"type": "json_object"}} if json_mode else {}
             response = client.chat.completions.create(
                 model=model,
                 messages=messages,
-                response_format={"type": "json_object"},
                 temperature=0,
                 max_tokens=5000,
+                **kwargs,
             )
-            return json.loads(response.choices[0].message.content)
+            content = response.choices[0].message.content or ""
+            return json.loads(content) if json_mode else _parse_json_text(content)
         except RateLimitError as e:
             last_err = e
             time.sleep(20 * (attempt + 1))
+        except (ValueError, json.JSONDecodeError) as e:
+            last_err = e
+            time.sleep(2)
         except BadRequestError as e:
             if getattr(e, "code", None) != "json_validate_failed" and "json_validate_failed" not in str(e):
                 raise
