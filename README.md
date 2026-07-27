@@ -23,6 +23,22 @@ A bounded Planner → Executor → Verifier agent (LangGraph, ≤8 tool calls, �
 
 ![Architecture 3](docs/diagrams/arch3-pev-loop.png)
 
+## Database — `db/avahi.db`
+
+A single SQLite database, **committed to the repo** so a fresh clone or deploy runs without a seed step. All contents are synthetic demo data — no real policyholders, vehicles, or claims.
+
+| Table | Holds |
+|---|---|
+| `policies` | the customers behind the dropdown — car class, status, coverage flags, limits, deductible, plus a JSON column for nested vehicle/policyholder detail |
+| `cost_table` | per-panel repair costs the rules engine prices damage against |
+| `claims` | seeded claims used by the evaluation runs |
+| `claim_damage_instances` | normalized damage rows per claim, joined against `cost_table` |
+| `adjudications` | audit log of every live decision; escalations form the human review queue |
+
+Plain columns are used for anything joined or filtered on, with one JSON column for decorative nested fields — document-style reads without a second database.
+
+The database is opened **read-write** at runtime, since filing a claim from an uploaded photo writes new rows. The committed file is therefore the *starting* state: on an ephemeral host, claims created during a session are lost on restart. The golden set is unaffected — it lives in `data/golden_set/` as frozen files, never in the database.
+
 ## Evaluation — in progress
 
 All three architectures are scored against the frozen golden set in `data/golden_set/` by the runners in `eval/`. **Complete testing is limited and still in progress**, constrained by the Groq free tier rather than by the code — a full pass across the three architectures, plus a second pass for the reproducibility metric, exhausts the free-tier token budget before it completes.
