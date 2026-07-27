@@ -1,0 +1,23 @@
+{
+  "golden_version": "v2",
+  "partial": true,
+  "n": 1,
+  "rows": [
+    {
+      "claim_id": "CLM-00001",
+      "mismatch_type": null,
+      "true_route": "auto_approve",
+      "pred_route": "auto_deny",
+      "route_ok": false,
+      "true_payout": 290.0,
+      "pred_payout": null,
+      "payout_ok": false,
+      "coverage_type": "none",
+      "hallucinated_payout": false,
+      "hallucination_reason": null,
+      "reasoning": "The vehicle in the photo is an older, rusted model that does not match the insured 2024 Toyota Camry, and the visible condition is due to neglect rather than a covered event. Insurance policies exclude coverage for wear and tear, rust, and mechanical deterioration.",
+      "latency_s": 60.82
+    }
+  ],
+  "run_2_rows": []
+}

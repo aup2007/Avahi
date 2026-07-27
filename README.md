@@ -23,6 +23,12 @@ A bounded Planner → Executor → Verifier agent (LangGraph, ≤8 tool calls, �
 
 ![Architecture 3](docs/diagrams/arch3-pev-loop.png)
 
+## Evaluation — in progress
+
+All three architectures are scored against the frozen golden set in `data/golden_set/` by the runners in `eval/`. **Complete testing is limited and still in progress**, constrained by the Groq free tier rather than by the code — a full pass across the three architectures, plus a second pass for the reproducibility metric, exhausts the free-tier token budget before it completes.
+
+Current state: the runners (`run_arch1.py`, `run_arch2.py`, `run_arch3.py`, `run_interleaved.py`) and the scorer (`compare.py`) are complete and working end to end; the committed result files are **smoke-scale only** (`smoke_arch*_results.json`, flagged `"partial": true`), and the second reproducibility pass has not been run. `run_interleaved.py` alternates the architectures per claim so a partial run still yields a like-for-like comparison. Full numbers require a paid tier or a staged multi-day run.
+
 ## Observability — LangSmith tracing
 
 An agent that picks its own next step is only auditable if you can replay what it picked and why, so Arch 3 is instrumented for LangSmith. Tracing is opt-in via env config and scoped to Arch 3 — Arch 1 and Arch 2 stay on plain self-hosted logs.
